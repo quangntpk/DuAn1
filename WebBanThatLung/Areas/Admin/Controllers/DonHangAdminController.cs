@@ -80,6 +80,9 @@ namespace WebBanThatLung.Areas.Admin.Controllers
                 donHang.TRANG_THAI_DH = 5;
                 _dataContext.Update(donHang);
                 await _dataContext.SaveChangesAsync();
+
+
+                
             }
             return RedirectToAction("DonHang");
         }
