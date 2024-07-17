@@ -1,0 +1,77 @@
+﻿@model WebBanThatLung.Models.NguoiDungModel
+@{
+    ViewBag.Title = "Đăng Nhập";
+}
+
+<style>
+    .form-control {
+        margin-bottom: 10px;
+    }
+
+    .login-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    .btn-den {
+        background-color: #000;
+        border-color: #000;
+        color: #fff;
+    }
+
+        .btn-den:hover {
+            background-color: #fff;
+            border-color: #000;
+            color: #000;
+        }
+
+    .form-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="login-container">
+            <div class="login-form">
+                <h2 class="text-center">Đăng Nhập</h2>
+
+                <form asp-action="Login" method="post" class="form">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label for="TAI_KHOAN" class="control-label">Tên tài khoản</label>
+                        <input id="TAI_KHOAN" name="TAI_KHOAN" class="form-control" />
+                        <span asp-validation-for="TAI_KHOAN" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MAT_KHAU" class="control-label">Mật khẩu</label>
+                        <input id="MAT_KHAU" name="MAT_KHAU" class="form-control" type="password" />
+                        <span asp-validation-for="MAT_KHAU" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-den btn-block">Đăng nhập</button>
+                </form>
+                <p>Bạn chưa có tài khoản? <a asp-action="Register" class="text-warning" asp-controller="NguoiDung">Đăng ký</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

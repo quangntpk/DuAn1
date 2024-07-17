@@ -1,0 +1,52 @@
+﻿@model WebBanThatLung.Models.NguoiDungModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row" style="margin-top: 200px;">
+    <div class="col-md-4">
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="HO_TEN" class="control-label">Họ và tên</label>
+                <input asp-for="HO_TEN" class="form-control" />
+                <span asp-validation-for="HO_TEN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SDT" class="control-label">Số điện thoại</label>
+                <input asp-for="SDT" maxlength="10" class="form-control" />
+                <span asp-validation-for="SDT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CCCD" class="control-label">Số căn cước công dân</label>
+                <input asp-for="CCCD" maxlength="12" class="form-control" />
+                <span asp-validation-for="CCCD" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EMAIL" class="control-label"></label>
+                <input asp-for="EMAIL" class="form-control" />
+                <span asp-validation-for="EMAIL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TAI_KHOAN" class="control-label"></label>
+                <input asp-for="TAI_KHOAN" class="form-control" />
+                <span asp-validation-for="TAI_KHOAN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MAT_KHAU" class="control-label"></label>
+                <input asp-for="MAT_KHAU" class="form-control" />
+                <span asp-validation-for="MAT_KHAU" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Đăng ký" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

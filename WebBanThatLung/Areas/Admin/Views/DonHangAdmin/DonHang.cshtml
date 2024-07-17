@@ -1,0 +1,194 @@
+﻿@model IEnumerable<WebBanThatLung.Models.DonHangModel>
+
+@{
+    ViewData["Title"] = "DonHang";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Đơn hàng</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs nav-line nav-color-secondary" id="line-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="line-home-tab" data-bs-toggle="pill" href="#line-home" role="tab" aria-controls="pills-home" aria-selected="true">Đang xử lý</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="line-profile-tab" data-bs-toggle="pill" href="#line-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Đang giao</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="line-contact-tab" data-bs-toggle="pill" href="#line-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Hoàn thành</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3 mb-3" id="line-tabContent">
+                            <div class="tab-pane fade show active" id="line-home" role="tabpanel" aria-labelledby="line-home-tab">
+                                <div class="table-responsive">
+                                    <table id="add-row" class="display table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Ngày đặt</th>
+                                                <th>Trạng thái đơn hàng</th>
+                                                <th>Trạng thái thanh toán</th>
+                                                <th>Hình thức thanh toán</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in ViewBag.ChoDuyet)
+                                            {
+                                                <tr>
+                                                    <td>@item.ID_DON_HANG</td>
+                                                    <td>@item.TEN_NGUOI_NHAN</td>
+                                                    <td>@item.DIACHI</td>
+                                                    <td>@item.NGAY_DAT.ToString("dd/MM/yyyy")</td>
+                                                    <td>Đang xử lý</td>
+                                                    <td>@item.TRANG_THAI_THANH_THAM</td>
+                                                    <td>
+                                                        @if (item.HinhThucThanhToan == "COD")
+                                                        {
+                                                            <span>Thanh toán khi nhận hàng</span>
+                                                        }
+                                                        else if (item.HinhThucThanhToan == "VNPay")
+                                                        {
+                                                            <span>Thanh toán VNPay</span>
+                                                        }
+                                                    </td>
+
+
+                                                    <td>
+                                                        <div class="form-button-action">
+                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
+                                                                <i class="fa fa-times"></i> Chi tiết
+                                                            </button>
+                                                        </div>
+                                                        <div class="form-button-action">
+                                                            <button type="button" class="btn btn-link btn-primary" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
+                                                                <i class="fa fa-times"></i> Duyệt
+                                                            </button>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="line-profile" role="tabpanel" aria-labelledby="line-profile-tab">
+                                <div class="table-responsive">
+                                    <table id="add-row" class="display table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Ngày đặt</th>
+                                                <th>Trạng thái đơn hàng</th>
+                                                <th>Trạng thái thanh toán</th>
+                                                <th>Hình thức thanh toán</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in ViewBag.DangGiao)
+                                            {
+                                                <tr>
+                                                    <td>@item.ID_DON_HANG</td>
+                                                    <td>@item.TEN_NGUOI_NHAN</td>
+                                                    <td>@item.DIACHI</td>
+                                                    <td>@item.NGAY_DAT.ToString("dd/MM/yyyy")</td>
+                                                    <td>Đã duyệt</td>
+                                                    <td>@item.TRANG_THAI_THANH_THAM</td>
+                                                    <td>
+                                                        @if (item.HinhThucThanhToan == "COD")
+                                                        {
+                                                            <span>Thanh toán khi nhận hàng</span>
+                                                        }
+                                                        else if (item.HinhThucThanhToan == "VNPay")
+                                                        {
+                                                            <span>Thanh toán VNPay</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-button-action">
+                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
+                                                                <i class="fa fa-times"></i> Chi tiết
+                                                            </button>
+                                           
+                                                        </div>
+                                                        <div class="form-button-action">
+                                                            <button type="button" class="btn btn-link btn-primary" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
+                                                                <i class="fa fa-times"></i> Duyệt
+                                                            </button>
+                                           
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="line-contact" role="tabpanel" aria-labelledby="line-contact-tab">
+                                <div class="table-responsive">
+                                    <table id="add-row" class="display table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã đơn</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Ngày đặt</th>
+                                                <th>Trạng thái đơn hàng</th>
+                                                <th>Trạng thái thanh toán</th>
+                                                <th>Hình thức thanh toán</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in ViewBag.HoanThanh)
+                                            {
+                                                <tr>
+                                                    <td>@item.ID_DON_HANG</td>
+                                                    <td>@item.TEN_NGUOI_NHAN</td>
+                                                    <td>@item.DIACHI</td>
+                                                    <td>@item.NGAY_DAT.ToString("dd/MM/yyyy")</td>
+                                                    <td>Hoàn thành</td>
+                                                    <td>@item.TRANG_THAI_THANH_THAM</td>
+                                                    <td>
+                                                        @if (item.HinhThucThanhToan == "COD")
+                                                        {
+                                                            <span>Thanh toán khi nhận hàng</span>
+                                                        }
+                                                        else if (item.HinhThucThanhToan == "VNPay")
+                                                        {
+                                                            <span>Thanh toán VNPay</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-button-action">
+                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
+                                                                <i class="fas fa-align-justify"></i> Chi tiết
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

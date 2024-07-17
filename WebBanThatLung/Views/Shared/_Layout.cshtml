@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/png" href="~/image/Lo-go.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="~/Users/assets/css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="~/Users/assets/bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="~/Users/assets/css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="~/Users/assets/css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="~/Users/assets/css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="~/Users/assets/css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="~/Users/assets/css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="~/Users/assets/css/responsive.css">
+
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+</head>
+<body>
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+    <!-- header -->
+    <div class="top-header-area" id="sticker">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 text-center">
+                    <div class="main-menu-wrap">
+                        <!-- logo -->
+                        <div class="site-logo">
+                            <a asp-controller="Home" asp-action="Index">
+                                <img src="~/image/Lo-go.png" alt="">
+                            </a>
+                        </div>
+                        <!-- logo -->
+                        <!-- menu start -->
+                        <nav class="main-menu">
+                            <ul>
+                                <li class="current-list-item">
+                                    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                                </li>
+                                <li><a asp-controller="CuaHang" asp-action="Index">Cửa hàng</a></li>
+                                <li><a asp-controller="CuaHang" asp-action="Index">Liên hệ</a></li>
+
+
+                                @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+                                @using WebBanThatLung.Repository
+
+                                @{
+                                    var user = HttpContextAccessor.HttpContext.Session.GetJson<WebBanThatLung.Models.NguoiDungModel>("User");
+                                    var userName = user?.HO_TEN ?? "Tài khoản";
+                                }
+
+                                @if (user != null)
+                                {
+                                    <li>
+                                        <div class="header-icons">
+                                            <a class="shopping-cart" asp-controller="GioHang" asp-action="TrangGioHang">
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </a>
+                                        <a>
+                                            <i class="fas fa-user"></i> @userName
+                                        </a>
+                                        <ul class="sub-menu">
+                                            <li><a class="dropdown-item" asp-controller="NguoiDung" asp-action="ThongTinCaNhan">Thông tin cá nhân</a></li>
+            
+                                            <li> <a class="dropdown-item" asp-controller="DonHang" asp-action="Index">Đơn mua</a></li>
+                                            <li> <a class="dropdown-item" asp-controller="NguoiDung" asp-action="Logout">Đăng xuất</a></li>
+                                        </ul>
+                                        </div>
+                                    </li>
+
+                                }
+                                else
+                                {
+                                    <li>
+                                        <div class="header-icons">
+                                            <a class="shopping-cart" asp-controller="GioHang" asp-action="TrangGioHang"><i class="fas fa-shopping-cart"></i></a>
+                                            <a class="mobile-hide search-bar-icon" asp-controller="NguoiDung" asp-action="Login"><i class="fas fa-user"></i> Đăng nhập</a>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                        <!-- menu end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <partial name="_notificationPartial" />
+    @RenderBody()
+
+    <div class="footer-area">
+        @await Html.PartialAsync("_Footer")
+    </div>
+
+    <!-- jquery -->
+    <script src="~/Users/assets/js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="~/Users/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- count down -->
+    <script src="~/Users/assets/js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="~/Users/assets/js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="~/Users/assets/js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="~/Users/assets/js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="~/Users/assets/js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="~/Users/assets/js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="~/Users/assets/js/sticker.js"></script>
+    <!-- main js -->
+    <script src="~/Users/assets/js/main.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

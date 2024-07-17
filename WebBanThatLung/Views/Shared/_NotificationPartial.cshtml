@@ -1,0 +1,33 @@
+﻿<script src="/lib/jquery//dist/jquery.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+@if (TempData["ThanhCong"] != null)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+       
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
+            };
+            toastr.success('@TempData["ThanhCong"]');
+        });
+    </script>
+}
+
+@if (TempData["ThaiBai"] != null)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+         
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true
+            };
+            toastr.error('@TempData["ThaiBai"]');
+        });
+    </script>
+}
+
+    

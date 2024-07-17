@@ -1,0 +1,90 @@
+﻿@model IEnumerable<WebBanThatLung.Models.GioHangModel>
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+
+    var culture = System.Globalization.CultureInfo.InvariantCulture;
+}
+
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <h2 style="color: #fff">Giỏ hàng</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- cart -->
+<div class="cart-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="cart-table-wrap">
+                    <table class="cart-table">
+                        <thead class="cart-table-head">
+                            <tr class="table-head-row">
+                                <th class="product-remove"></th>
+                                <th class="product-image">Hình ảnh</th>
+                                <th class="product-name">Tên sản phẩm</th>
+                                <th class="product-price">Giá</th>
+                                <th class="product-quantity">Số lượng</th>
+                                <th class="product-color">Màu</th>
+                                <th class="product-total">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="table-body-row">
+                                    <td class="product-remove">
+                                        <form asp-controller="GioHang" asp-action="XoaKhoiGioHang" method="post">
+                                            <input type="hidden" name="maGH" value="@item.ID_GIO_HANG" />
+                                            <button type="submit" class="btn btn-link p-0 m-0" style="color: inherit; border: none;">
+                                                <span class="far fa-window-close"></span>
+                                            </button>
+                                        </form>
+                                      
+                                    <td class="product-image">
+                                        <img src="~/media/SanPham/@(item.SAN_PHAM.HINH_ANH.FirstOrDefault()?.TEN_HINH_ANH ?? "default.jpg")" alt="">
+                                    </td>
+                                    <td class="product-name">@item.SAN_PHAM.TEN_SAN_PHAM</td>
+                                    <td class="product-price">@item.GIA.ToString("N0", culture).Replace(",", ".")đ</td>
+                                    <td class="product-quantity"><input type="number" min="1" max="100" value="@item.SO_LUONG_GH"></td>
+                                    <td class="product-color">@item.SAN_PHAM.MAU.MAU</td>
+                                    <td class="product-total">@item.THANH_TIEN.ToString("N0", culture).Replace(",", ".")đ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="total-section">
+                    <table class="total-table">
+                        <thead class="total-table-head">
+                            <tr class="table-total-row"> 
+                                <th>Tổng</th>
+                                <th>Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="total-data">
+                                <td><strong>Tổng tiền: </strong></td>
+                                <td>@ViewBag.TongTien.ToString("N0", culture).Replace(",", ".")đ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="cart-buttons">
+                        <a style="width: 350px;" asp-controller="DonHang" asp-action="DatHang" class="boxed-btn black text text-center">Đặt hàng</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end cart -->
