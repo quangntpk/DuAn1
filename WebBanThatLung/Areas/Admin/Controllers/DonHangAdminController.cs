@@ -4,6 +4,7 @@ using WebBanThatLung.Repository;
 using System.Linq;
 using System.Threading.Tasks;
 using WebBanThatLung.Repositoty;
+using WebBanThatLung.Models;
 
 namespace WebBanThatLung.Areas.Admin.Controllers
 {
@@ -34,9 +35,12 @@ namespace WebBanThatLung.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> DuyetDon(int id)
         {
+            var NhanVien = HttpContext.Session.GetJson<NguoiDungModel>("User");
+
             var donHang = await _dataContext.DON_HANGs.FindAsync(id);
             if(donHang != null)
             {
+                donHang.ID_NHAN_VIEN = NhanVien.ID_NGUOI_DUNG;
                 donHang.TRANG_THAI_DH = 1;
                 _dataContext.DON_HANGs.Update(donHang);
                 await _dataContext.SaveChangesAsync();
@@ -72,20 +76,22 @@ namespace WebBanThatLung.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> HuyDon(int id, string LyDoHuy)
         {
+            var NhanVien = HttpContext.Session.GetJson<NguoiDungModel>("User");
             var donHang = await _dataContext.DON_HANGs.FindAsync(id);
             if (donHang != null)
             {
+                donHang.ID_NHAN_VIEN = NhanVien.ID_NGUOI_DUNG;
                 donHang.TRANG_THAI_THANH_THAM = "Chưa thanh toán";
                 donHang.LY_DO_HUY = LyDoHuy;
-                donHang.TRANG_THAI_DH = 5;
+                donHang.TRANG_THAI_DH = 5; 
                 _dataContext.Update(donHang);
                 await _dataContext.SaveChangesAsync();
 
-
-                
+                TempData["ThanhCong"] = "Hủy đơn hàng thành công";
             }
             return RedirectToAction("DonHang");
         }
+
 
         public async Task<IActionResult> ChiTiet(int id)
         {

@@ -148,7 +148,7 @@ namespace WebBanThatLung.Controllers
             if (sp != null)
             {
                 sp.TRANG_THAI_THANH_THAM = "Đã thanh toán";
-
+              
                 _dataContext.SaveChanges();
             }
             int id = sp.ID_DON_HANG;

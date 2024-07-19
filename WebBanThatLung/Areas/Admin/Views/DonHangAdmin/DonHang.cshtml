@@ -5,6 +5,38 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<style>
+
+
+</style>
+
+<!-- Modal Hủy đơn hàng -->
+<div class="modal fade" id="huyDonModal" tabindex="-1" aria-labelledby="huyDonModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="DonHangAdmin" asp-action="HuyDon" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="huyDonModalLabel">Nhập lý do hủy đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="donHangId" name="id" value="" />
+                    <div class="mb-3">
+                        <label for="lyDoHuy" class="col-form-label">Lý do hủy:</label>
+                        <textarea class="form-control" id="lyDoHuy" name="LyDoHuy" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="container">
     <div class="page-inner">
         <div class="row">
@@ -31,12 +63,12 @@
                                     <table id="add-row" class="display table table-striped table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Mã đơn</th>
+                                                <th>#</th>
                                                 <th>Tên khách hàng</th>
-                                                <th>Địa chỉ</th>
+                                           
                                                 <th>Ngày đặt</th>
-                                                <th>Trạng thái đơn hàng</th>
-                                                <th>Trạng thái thanh toán</th>
+                                                <th>Trạng thái</th>
+                                                <th>Thanh toán</th>
                                                 <th>Hình thức thanh toán</th>
                                                 <th>Thao tác</th>
                                             </tr>
@@ -47,7 +79,7 @@
                                                 <tr>
                                                     <td>@item.ID_DON_HANG</td>
                                                     <td>@item.TEN_NGUOI_NHAN</td>
-                                                    <td>@item.DIACHI</td>
+                                               
                                                     <td>@item.NGAY_DAT.ToString("dd/MM/yyyy")</td>
                                                     <td>Đang xử lý</td>
                                                     <td>@item.TRANG_THAI_THANH_THAM</td>
@@ -61,19 +93,24 @@
                                                             <span>Thanh toán VNPay</span>
                                                         }
                                                     </td>
-
-
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
-                                                                <i class="fa fa-times"></i> Chi tiết
-                                                            </button>
-                                                        </div>
-                                                        <div class="form-button-action">
-                                                            <button type="button" class="btn btn-link btn-primary" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
-                                                                <i class="fa fa-times"></i> Duyệt
+                                                            <form asp-controller="DonHangAdmin" asp-action="DuyetDon" method="post">
+                                                                <input type="hidden" name="id" value="@item.ID_DON_HANG" />
+                                                                <button type="submit" class="btn btn-link btn-primary">
+                                                                    <i class="fas fa-check"></i> 
+                                                                </button>
+                                                            </form>
+
+
+                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#huyDonModal" onclick="setDeleteId(@item.ID_DON_HANG)">
+                                                                <i class="fas fa-times"></i> <!-- Icon Hủy -->
                                                             </button>
 
+
+                                                            <button type="button" class="btn btn-link btn-secondary" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
+                                                                <i class="fas fa-bars"></i>
+                                                            </button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -87,12 +124,12 @@
                                     <table id="add-row" class="display table table-striped table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Mã đơn</th>
+                                                <th>#</th>
                                                 <th>Tên khách hàng</th>
-                                                <th>Địa chỉ</th>
+
                                                 <th>Ngày đặt</th>
-                                                <th>Trạng thái đơn hàng</th>
-                                                <th>Trạng thái thanh toán</th>
+                                                <th>Trạng thái</th>
+                                                <th>Thanh toán</th>
                                                 <th>Hình thức thanh toán</th>
                                                 <th>Thao tác</th>
                                             </tr>
@@ -103,9 +140,9 @@
                                                 <tr>
                                                     <td>@item.ID_DON_HANG</td>
                                                     <td>@item.TEN_NGUOI_NHAN</td>
-                                                    <td>@item.DIACHI</td>
+                                                   
                                                     <td>@item.NGAY_DAT.ToString("dd/MM/yyyy")</td>
-                                                    <td>Đã duyệt</td>
+                                                    <td>Đang giao</td>
                                                     <td>@item.TRANG_THAI_THANH_THAM</td>
                                                     <td>
                                                         @if (item.HinhThucThanhToan == "COD")
@@ -119,16 +156,17 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
-                                                                <i class="fa fa-times"></i> Chi tiết
-                                                            </button>
-                                           
+                                                            <form asp-controller="DonHangAdmin" asp-action="HoanThanh" method="post">
+                                                                <input type="hidden" name="id" value="@item.ID_DON_HANG" />
+                                                                <button type="submit" class="btn btn-link btn-primary">
+                                                                    <i class="fas fa-check"></i> <!-- Icon Hoàn thành -->
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                         <div class="form-button-action">
-                                                            <button type="button" class="btn btn-link btn-primary" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
-                                                                <i class="fa fa-times"></i> Duyệt
+                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
+                                                                <i class="fas fa-align-justify"></i> <!-- Icon Chi tiết -->
                                                             </button>
-                                           
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -142,12 +180,12 @@
                                     <table id="add-row" class="display table table-striped table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Mã đơn</th>
+                                                <th>#</th>
                                                 <th>Tên khách hàng</th>
-                                                <th>Địa chỉ</th>
+
                                                 <th>Ngày đặt</th>
-                                                <th>Trạng thái đơn hàng</th>
-                                                <th>Trạng thái thanh toán</th>
+                                                <th>Trạng thái</th>
+                                                <th>Thanh toán</th>
                                                 <th>Hình thức thanh toán</th>
                                                 <th>Thao tác</th>
                                             </tr>
@@ -158,7 +196,7 @@
                                                 <tr>
                                                     <td>@item.ID_DON_HANG</td>
                                                     <td>@item.TEN_NGUOI_NHAN</td>
-                                                    <td>@item.DIACHI</td>
+                                                
                                                     <td>@item.NGAY_DAT.ToString("dd/MM/yyyy")</td>
                                                     <td>Hoàn thành</td>
                                                     <td>@item.TRANG_THAI_THANH_THAM</td>
@@ -175,7 +213,7 @@
                                                     <td>
                                                         <div class="form-button-action">
                                                             <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
-                                                                <i class="fas fa-align-justify"></i> Chi tiết
+                                                                <i class="fas fa-align-justify"></i> <!-- Icon Chi tiết -->
                                                             </button>
                                                         </div>
                                                     </td>
@@ -192,3 +230,8 @@
         </div>
     </div>
 </div>
+<script>
+    function setDeleteId(donHangId) {
+        document.getElementById('donHangId').value = donHangId;
+    }
+</script>
