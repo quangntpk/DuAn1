@@ -23,6 +23,9 @@ namespace WebBanThatLung.Models
         public string HinhThucThanhToan { get; set; }
         public DateTime? NGAY_GIAO { get; set; }
         public string LY_DO_HUY { get; set; } = "";
+
+        [Required(ErrorMessage = "Không được để trống tên người nhận.")]
+        [StringLength(40, MinimumLength = 5, ErrorMessage = "Tên người nhận phải từ 5 đến 40 ký tự.")]
         public string TEN_NGUOI_NHAN { get; set; }
 
         public string DIACHI { get; set; }

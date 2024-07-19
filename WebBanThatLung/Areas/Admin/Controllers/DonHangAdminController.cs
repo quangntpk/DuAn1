@@ -96,18 +96,47 @@ namespace WebBanThatLung.Areas.Admin.Controllers
         public async Task<IActionResult> ChiTiet(int id)
         {
             var donHang = await _dataContext.DON_HANGs
-                                     .Include(dh => dh.CHI_TIET_DON_HANG)
-                                         .ThenInclude(ct => ct.SAN_PHAM)
-                                     .Include(dh => dh.NGUOI_DUNG)
-                                     .FirstOrDefaultAsync(dh => dh.ID_NGUOI_DUNG == id);
+                                .Include(dh => dh.CHI_TIET_DON_HANG)
+                                    .ThenInclude(ct => ct.SAN_PHAM)
+                                .Include(dh => dh.NGUOI_DUNG)
+                                .FirstOrDefaultAsync(dh => dh.ID_DON_HANG == id);
 
             if (donHang == null)
             {
                 return NotFound();
             }
 
-            return View(donHang);
+            var chiTietDonHang = donHang.CHI_TIET_DON_HANG.Select(ct => new
+            {
+                tenSanPham = ct.SAN_PHAM.TEN_SAN_PHAM,
+                soLuong = ct.SO_LUONG,
+                gia = ct.GIA,
+                thanhTien = ct.THANH_TIEN
+            }).ToList();
+
+            var nguoiDung = new
+            {
+                tenNguoiNhan = donHang.TEN_NGUOI_NHAN,
+                diaChi = donHang.DIACHI,
+                soDienThoai = donHang.NGUOI_DUNG.SDT,
+                tenNguoiDat = donHang.NGUOI_DUNG.HO_TEN 
+            };
+
+            var response = new
+            {
+                chiTietDonHang = chiTietDonHang,
+                nguoiDung = nguoiDung,
+                ngayDat = donHang.NGAY_DAT.ToString("dd/MM/yyyy"),
+                trangThaiDonHang = donHang.TRANG_THAI_DH == 0 ? "Đang xử lý" : donHang.TRANG_THAI_DH == 1 ? "Đang giao" : "Hoàn thành",
+                trangThaiThanhToan = donHang.TRANG_THAI_THANH_THAM,
+                hinhThucThanhToan = donHang.HinhThucThanhToan
+            };
+
+            return Json(response);
         }
+
+
+
 
     }
 }
