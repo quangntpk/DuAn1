@@ -85,6 +85,7 @@ namespace WebBanThatLung.Areas.Admin.Controllers
             return View(sanPham);
         }
 
+         
         [Route("Edit/{id}")]
         public IActionResult Edit(int id)
         {

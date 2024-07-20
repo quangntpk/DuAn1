@@ -88,7 +88,8 @@ namespace WebBanThatLung.Migrations
 
                     b.Property<string>("TEN_NGUOI_NHAN")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<int>("TRANG_THAI_DH")
                         .HasColumnType("int");

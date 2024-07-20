@@ -12,8 +12,8 @@ using WebBanThatLung.Repositoty;
 namespace WebBanThatLung.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240709162805_Create_New_EF")]
-    partial class Create_New_EF
+    [Migration("20240719082526_Create_test_thatLung")]
+    partial class Create_test_thatLung
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -90,7 +90,8 @@ namespace WebBanThatLung.Migrations
 
                     b.Property<string>("TEN_NGUOI_NHAN")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<int>("TRANG_THAI_DH")
                         .HasColumnType("int");

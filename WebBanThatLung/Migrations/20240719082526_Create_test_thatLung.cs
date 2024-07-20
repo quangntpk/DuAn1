@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebBanThatLung.Migrations
 {
-    public partial class Create_New_EF : Migration
+    public partial class Create_test_thatLung : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -85,7 +85,7 @@ namespace WebBanThatLung.Migrations
                     HinhThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NGAY_GIAO = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LY_DO_HUY = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TEN_NGUOI_NHAN = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TEN_NGUOI_NHAN = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     DIACHI = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
