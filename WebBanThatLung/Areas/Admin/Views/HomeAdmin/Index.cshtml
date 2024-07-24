@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SanPhamModel>
 
 @{
-    ViewData["Title"] = "QUản lý sản  phẩm";
+    ViewData["Title"] = "Quản lý sản  phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -27,17 +27,41 @@
                             <table id="add-row" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th>Hình ảnh</th>
                                         <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Giá</th>
+
+                                        <th>Ngày tạo</th>
+                                        <th>Chất liệu</th>
                                         <th style="width: 10%">Thao tác</th>
                                     </tr>
                                 </thead>
+
+
+
+
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
+
+                                        var hinhAnhDauTien = item.HINH_ANH?.FirstOrDefault()?.TEN_HINH_ANH;
                                         <tr>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(hinhAnhDauTien))
+                                                {
+                                                    <img src="~/media/SanPham/@hinhAnhDauTien" height="70px" width="70px" style="border-radius: 5px" alt="">
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/media/SanPham/default.jpg" height="70px" width="70px" style="border-radius: 5px" alt="No image available">
+                                                }
+                                            </td>
                                             <td>@item.TEN_SAN_PHAM</td>
                                             <td>@item.SO_LUONG</td>
+                                            <td>@item.GIA</td>
+                                            <td>@item.NGAY_TAO.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.CHAT_LIEU</td>
                                             <td>
                                                 <div class="form-button-action">
                                                     <a type="button" class="btn btn-link btn-primary btn-lg" asp-controller="HomeAdmin" asp-action="Edit" asp-route-id="@item.ID_SAN_PHAM">
@@ -114,4 +138,3 @@
 }
 
 
-                                                            

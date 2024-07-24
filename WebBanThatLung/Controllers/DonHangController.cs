@@ -201,5 +201,11 @@ namespace WebBanThatLung.Controllers
 
         }
 
+
+        public async Task<IActionResult> DonMua()
+        {
+            return View();
+        }
+
     }
 }

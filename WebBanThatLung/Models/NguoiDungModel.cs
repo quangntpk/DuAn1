@@ -11,7 +11,7 @@ namespace WebBanThatLung.Models
 
         [Required(ErrorMessage = "Không được để trống họ và tên.")]
         [StringLength(40, MinimumLength = 5, ErrorMessage = "Họ tên phải từ 5 đến 40 ký tự.")]
-      
+
         public string HO_TEN { get; set; }
 
         [Required(ErrorMessage = "Yêu cầu nhập số điện thoại")]

@@ -22,15 +22,17 @@
     }
 
     .btn-den {
-        background-color: #000;
-        border-color: #000;
-        color: #fff;
+        background-color: #F28123;
+        border-color: #F28123;
+        color: #000;
+        font-weight: bold;
     }
 
         .btn-den:hover {
-            background-color: #fff;
+            background-color: #000;
             border-color: #000;
-            color: #000;
+            color: #F28123;
+            font-weight: bold;
         }
 
     .form-title {
@@ -41,36 +43,101 @@
         text-align: center;
         margin-bottom: 20px;
     }
+
 </style>
 
 <div class="row">
     <div class="col-md-12">
-        <div class="login-container">
+        <div class="login-container" style="margin-top: 150px">
             <div class="login-form">
-                <h2 class="text-center">Đăng Nhập</h2>
+                <h3 class="text-center">Đăng nhập vào hệ thống!</h3>
+                <p class="text-center">Xin mời bạn nhập đầy đủ thông tin đăng nhập</p>
 
-                <form asp-action="Login" method="post" class="form">
+                <form asp-action="Login" method="post" class="form" id="loginForm">
                     <div asp-validation-summary="All" class="text-danger"></div>
 
                     <div class="form-group">
                         <label for="TAI_KHOAN" class="control-label">Tên tài khoản</label>
-                        <input id="TAI_KHOAN" name="TAI_KHOAN" class="form-control" />
+                        <input id="TAI_KHOAN" asp-for="TAI_KHOAN" name="TAI_KHOAN" class="form-control" type="text" placeholder="Vui lòng nhập tài khoản" />
                         <span asp-validation-for="TAI_KHOAN" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
                         <label for="MAT_KHAU" class="control-label">Mật khẩu</label>
-                        <input id="MAT_KHAU" name="MAT_KHAU" class="form-control" type="password" />
+                        <div class="input-group">
+                            <input id="MAT_KHAU" asp-for="MAT_KHAU" name="MAT_KHAU" class="form-control" type="password" placeholder="Vui lòng nhập mật khẩu" />
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>
                         <span asp-validation-for="MAT_KHAU" class="text-danger"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-den btn-block">Đăng nhập</button>
+                    <div class="form-check form-check-sm mb-3">
+                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                        <label class="form-check-label text-muted fs-7" for="remember">Ghi nhớ tài khoản.</label>
+                    </div>
+
+                    <div style="margin: 10px 0px 20px 0px">
+                        <button type="submit" class="btn btn-den btn-block">ĐĂNG NHẬP</button>
+                    </div>
                 </form>
-                <p>Bạn chưa có tài khoản? <a asp-action="Register" class="text-warning" asp-controller="NguoiDung">Đăng ký</a></p>
+
+                <p>
+                    Bạn chưa có tài khoản?
+                    <a asp-action="Register" asp-controller="NguoiDung" class="text-warning" style="margin-left: 3px">Đăng ký</a>
+
+                    <a asp-action="ForgotPassword" asp-controller="NguoiDung" class="text-warning" style="margin-left: 230px">Quên mật khẩu?</a>
+                </p>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Retrieve and populate login credentials if they exist
+        const rememberedUsername = localStorage.getItem('rememberedUsername');
+        const rememberedPassword = localStorage.getItem('rememberedPassword');
+        const rememberMeChecked = localStorage.getItem('rememberMeChecked') === 'true';
+
+        if (rememberedUsername) {
+            document.getElementById('TAI_KHOAN').value = rememberedUsername;
+        }
+        if (rememberedPassword) {
+            document.getElementById('MAT_KHAU').value = rememberedPassword;
+        }
+        if (rememberMeChecked) {
+            document.getElementById('remember').checked = true;
+        }
+    });
+
+    document.getElementById('togglePassword').addEventListener('click', function (e) {
+        const passwordInput = document.getElementById('MAT_KHAU');
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function () {
+        const rememberMe = document.getElementById('remember').checked;
+        const username = document.getElementById('TAI_KHOAN').value;
+        const password = document.getElementById('MAT_KHAU').value;
+
+        if (rememberMe) {
+            localStorage.setItem('rememberedUsername', username);
+            localStorage.setItem('rememberedPassword', password);
+            localStorage.setItem('rememberMeChecked', true);
+        } else {
+            localStorage.removeItem('rememberedUsername');
+            localStorage.removeItem('rememberedPassword');
+            localStorage.setItem('rememberMeChecked', false);
+        }
+    });
+</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

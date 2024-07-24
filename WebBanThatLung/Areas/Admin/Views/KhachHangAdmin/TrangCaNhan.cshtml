@@ -1,0 +1,25 @@
+﻿@model WebBanThatLung.Models.NguoiDungModel
+
+@{
+    ViewData["Title"] = "Trang cá nhân";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Trang cá nhân</h1>
+
+<form asp-action="ChinhSuaThongTin" method="post">
+    <div class="form-group">
+        <label for="HoTen">Họ tên</label>
+        <input type="text" class="form-control" id="HoTen" name="HoTen" value="@Model.HO_TEN" required />
+    </div>
+    <div class="form-group">
+        <label for="SoDienThoai">Số điện thoại</label>
+        <input type="text" class="form-control" id="SoDienThoai" name="SoDienThoai" value="@Model.SDT" required />
+    </div>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" id="Email" name="email" value="@Model.EMAIL" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
+</form>

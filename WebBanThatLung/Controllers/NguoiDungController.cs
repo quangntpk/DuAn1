@@ -38,6 +38,10 @@ namespace WebBanThatLung.Controllers
                     {
                         return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
                     }
+                    else if (khachHang.VAI_TRO == 2)
+                    {
+                        return RedirectToAction("Index", "HomeNhanVien", new { area = "NhanVien" });
+                    }
                     else
                     {
                         return RedirectToAction("Index", "Home");
@@ -63,6 +67,33 @@ namespace WebBanThatLung.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Kiểm tra tính duy nhất của các trường
+                if (await _dataContext.NGUOI_DUNGs.AnyAsync(nd => nd.TAI_KHOAN == nguoiDung.TAI_KHOAN))
+                {
+                    ModelState.AddModelError("TAI_KHOAN", "Tài khoản này đã được sử dụng.");
+                }
+
+                if (await _dataContext.NGUOI_DUNGs.AnyAsync(nd => nd.SDT == nguoiDung.SDT))
+                {
+                    ModelState.AddModelError("SDT", "Số điện thoại này đã được sử dụng.");
+                }
+
+                if (await _dataContext.NGUOI_DUNGs.AnyAsync(nd => nd.EMAIL == nguoiDung.EMAIL))
+                {
+                    ModelState.AddModelError("EMAIL", "Email này đã được sử dụng.");
+                }
+                if (await _dataContext.NGUOI_DUNGs.AnyAsync(nd => nd.CCCD == nguoiDung.CCCD))
+                {
+                    ModelState.AddModelError("CCCD", "Số căn cước công dân này đã được sử dụng.");
+                }
+
+                // Nếu có lỗi, trả lại view cùng với các lỗi đã phát hiện
+                if (!ModelState.IsValid)
+                {
+                    return View(nguoiDung);
+                }
+
+                // Nếu không có lỗi, tiến hành đăng ký
                 nguoiDung.VAI_TRO = 0;
                 nguoiDung.HINH_ANH = "User_images.jpg";
                 nguoiDung.NGAY_TAO = DateTime.Now;
@@ -78,15 +109,11 @@ namespace WebBanThatLung.Controllers
             return View(nguoiDung);
         }
 
-
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("User");
             TempData["ThanhCong"] = "Đăng xuất thành công";
-            return RedirectToAction("Login", "NguoiDung");
+            return RedirectToAction("Login");
         }
     }
-
-
-
 }

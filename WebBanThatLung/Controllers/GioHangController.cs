@@ -56,9 +56,11 @@ namespace WebBanThatLung.Controllers
                                             .FirstOrDefaultAsync();
             if (sanPham == null)
             {
-                return NotFound("Sản phẩm hoặc màu sắc không tồn tại.");
-            }
+                TempData["ThatBai"] = "Vui lòng chọn một màu";
 
+                return NotFound();
+            }
+                
             var gioHangItem = await _dataContext.GIO_HANGs
                                                 .Where(gh => gh.ID_SAN_PHAM == ID_SAN_PHAM && gh.MAU_SP == Mau && gh.ID_NGUOI_DUNG == khachHang.ID_NGUOI_DUNG)
                                                 .FirstOrDefaultAsync();

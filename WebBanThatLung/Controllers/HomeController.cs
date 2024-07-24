@@ -21,6 +21,7 @@ namespace WebBanThatLung.Controllers
         {
             var sanPham = _dataContext.SAN_PHAMs
                              .Include(sp => sp.HINH_ANH)
+                             .Where(sp => sp.SO_LUONG > 0) 
                              .Take(8)
                              .ToList();
             return View(sanPham);
@@ -33,8 +34,6 @@ namespace WebBanThatLung.Controllers
 
         public async Task<IActionResult> ThemGioHang()
         {
-
-
             return View();
         }
 

@@ -16,7 +16,7 @@
     </script>
 }
 
-@if (TempData["ThaiBai"] != null)
+@if (TempData["ThatBai"] != null)
 {
     <script type="text/javascript">
         $(document).ready(function () {
@@ -25,7 +25,7 @@
                 "closeButton": true,
                 "progressBar": true
             };
-            toastr.error('@TempData["ThaiBai"]');
+            toastr.error('@TempData["ThatBai"]');
         });
     </script>
 }
