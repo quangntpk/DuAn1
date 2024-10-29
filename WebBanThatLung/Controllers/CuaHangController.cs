@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using WebBanThatLung.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 using WebBanThatLung.Repositoty;
+using WebBanThatLung.Repository;
 
 namespace WebBanThatLung.Controllers
 {
@@ -16,14 +18,17 @@ namespace WebBanThatLung.Controllers
             _dataContext = dataContext;
         }
 
-        // Phương thức hiển thị trang chính của cửa hàng
-        public async Task<IActionResult> Index()
+        // Phương thức hiển thị trang chính của cửa hàng với phân trang
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 12)
         {
-            var sanPham = await _dataContext.SAN_PHAMs
-                             .Include(sp => sp.HINH_ANH)
-                             .Where(sp => sp.SO_LUONG > 0) // Lọc sản phẩm có số lượng > 0
-                             .Take(8)
-                             .ToListAsync();
+            var sanPhamQuery = _dataContext.SAN_PHAMs
+                                    .Include(sp => sp.HINH_ANH)
+                                    .Where(sp => sp.SO_LUONG > 0)
+                                    .AsQueryable();
+
+            var sanPham = await sanPhamQuery
+                            .ToPagedListAsync(page, pageSize);
+
             return View(sanPham);
         }
 
@@ -49,20 +54,36 @@ namespace WebBanThatLung.Controllers
         // Phương thức hiển thị chi tiết sản phẩm
         public async Task<IActionResult> ChiTietSP(int id)
         {
+            var khachHang = HttpContext.Session.GetJson<NguoiDungModel>("User");
+            if (khachHang == null)
+            {
+                return RedirectToAction("Login", "NguoiDung");
+            }
+
             var sanPham = await _dataContext.SAN_PHAMs
                                             .Include(sp => sp.HINH_ANH)
                                             .Include(sp => sp.THUONG_HIEU)
                                             .Include(sp => sp.LOAI_SAN_PHAM)
-                                            .Include(sp => sp.MAU)
                                             .FirstOrDefaultAsync(sp => sp.ID_SAN_PHAM == id);
-
             if (sanPham == null)
             {
                 return NotFound();
             }
 
-            var danhSachMau = await _dataContext.MAUs.ToListAsync();
+            var danhSachMau = await _dataContext.MAUs
+                                                .Where(mau => _dataContext.SAN_PHAM_MAUs
+                                                                           .Any(spm => spm.ID_MAU == mau.ID_MAU))
+                                                .ToListAsync();
             ViewBag.DanhSachMau = danhSachMau;
+
+            var sanPhamLienQuan = await _dataContext.SAN_PHAMs
+                .Include(sp => sp.HINH_ANH)
+                .Where(sp => sp.ID_LOAI_SAN_PHAM == sanPham.ID_LOAI_SAN_PHAM && sp.ID_SAN_PHAM != id)
+                .Take(4)
+                .ToListAsync();
+
+            ViewBag.HinhAnhLienQuan = sanPhamLienQuan.Select(sp => sp.HINH_ANH.FirstOrDefault()).ToList();
+            ViewBag.SanPhamLienQuan = sanPhamLienQuan;
 
             return View(sanPham);
         }

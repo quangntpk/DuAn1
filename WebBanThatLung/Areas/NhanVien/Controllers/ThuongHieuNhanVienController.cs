@@ -4,8 +4,9 @@ using WebBanThatLung.Models;
 using WebBanThatLung.Repositoty;
 using WebBanThatLung.ViewModels;
 
-namespace WebBanThatLung.Areas.Admin.Controllers
+namespace WebBanThatLung.Areas.NhanVien.Controllers
 {
+
     [Area("NhanVien")]
     public class ThuongHieuNhanVienController : Controller
     {
@@ -77,8 +78,6 @@ namespace WebBanThatLung.Areas.Admin.Controllers
             TempData["ThatBai"] = "Sửa thương hiệu thất bại";
             return RedirectToAction(nameof(TrangThuongHieu));
         }
-
-
 
 
         [HttpPost]

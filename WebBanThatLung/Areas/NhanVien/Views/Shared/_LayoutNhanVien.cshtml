@@ -5,7 +5,7 @@
     <title>@ViewData["Title"]</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
 
-    <link rel="icon" href="~/image/Lo-go.png" type="~/NhanVien/image/x-icon" />
+    <link rel="icon" href="~/image/Lo-go_1.png" type="~/NhanVien/image/x-icon" />
 
 
 
@@ -22,7 +22,7 @@
                     "Font Awesome 5 Brands",
                     "simple-line-icons",
                 ],
-                urls: ["~/Admin/assets/css/fonts.min.css"],
+                urls: ["~/NhanVien/assets/css/fonts.min.css"],
             },
             active: function () {
                 sessionStorage.fonts = true;
@@ -59,7 +59,7 @@
         <div class="sidebar" data-background-color="dark">
             <div class="sidebar-wrapper scrollbar scrollbar-inner">
                 <div class="sidebar-content mt-2">
-                    <img src="~/image/Lo-go.png" height="60px" style="margin-left: 20px;" />
+                    <img src="~/image/LogoteamTwo.png" height="60px" style="margin-left: 20px;" />
                     <ul class="nav nav-secondary">
 
                         <li class="nav-item active">
@@ -102,20 +102,21 @@
 
                         <li class="nav-item mt-3">
                             <a asp-controller="DonHangNhanVien" asp-action="DonHang" class="collapsed" aria-expanded="false">
-                                <i class="fas fa-home"></i>
+                                <i class="fas fa-money-check"></i>
                                 <p>Đơn hàng</p>
                             </a>
                         </li>
+                      
                         <li class="nav-item mt-3">
-                            <a asp-controller="DonHangNhanVien" asp-action="DonHang" class="collapsed" aria-expanded="false">
-                                <i class="fas fa-home"></i>
-                                <p>Nhân viên</p>
+                            <a asp-controller="KhachHangNhanVien" asp-action="ListKhachHangNhanVien" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-user"></i>
+                                <p>Khách hàng</p>
                             </a>
                         </li>
                         <li class="nav-item mt-3">
-                            <a asp-controller="DonHangNhanVien" asp-action="DonHang" class="collapsed" aria-expanded="false">
+                            <a asp-controller="ThongKeNhanVien" asp-action="ThongKe" class="collapsed" aria-expanded="false">
                                 <i class="fas fa-home"></i>
-                                <p>Khách hàng</p>
+                                <p>Thống kê</p>
                             </a>
                         </li>
                     </ul>
@@ -142,7 +143,7 @@
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                                     <div class="avatar-sm">
-                                        <img src="~/media/User_images.jpg" alt="..." class="avatar-img rounded-circle" />
+                                        <img src="~/media/KhachHang/User_images.jpg" alt="..." class="avatar-img rounded-circle" />
                                     </div>
 
 
@@ -156,18 +157,18 @@
                                     <li>
                                         <div class="user-box">
                                             <div class="avatar-lg">
-                                                <img src="~/Admin/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                                                <img src="~/media/KhachHang/User_images.jpg" alt="image profile" class="avatar-img rounded" />
                                             </div>
                                             <div class="u-text">
-                                                <h4>Quản trị viên</h4>
+                                                <h4>Nhân Viên</h4>
                                                 <p class="text-muted">@EmailName</p>
-                                                <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">Thông tin các nhân</a>
+                                                <a asp-area="NhanVien" asp-controller="KhachHangNhanVien" asp-action="TrangCaNhan" class="btn btn-xs btn-secondary btn-sm">Thông tin các nhân</a>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" asp-controller="KhachHangNhanVien" asp-action="Logout">Đăng xuất</a>
+                                        <a class="dropdown-item" asp-action="Logout" asp-controller="KhachHangNhanVien">Đăng xuất</a>
                                     </li>
                     </div>
                     </ul>
@@ -263,7 +264,7 @@
     </div>
 
     <!-- Fonts and icons -->
-    <script src="~/Admin/assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="~/NhanVien/assets/js/plugin/webfont/webfont.min.js"></script>
     <!-- Core JS Files -->
     <script src="~/NhanVien/assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="~/NhanVien/assets/js/core/popper.min.js"></script>

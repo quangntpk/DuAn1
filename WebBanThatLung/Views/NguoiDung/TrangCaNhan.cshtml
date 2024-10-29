@@ -1,0 +1,213 @@
+﻿@model WebBanThatLung.Models.NguoiDungModel
+@{
+    ViewData["Title"] = "Thông tin cá nhân và thay đổi mật khẩu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-section breadcrumb-bg" style="padding: 50px 50px;">
+</div>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow" style="border-radius: 10px;">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Cập nhật trang cá nhân</h4>
+                </div>
+                <div class="card-body">
+
+                    <div class="profile-image-wrapper mb-4">
+                        <img src="~/media/KhachHang/@Model.HINH_ANH" alt="Profile Image" class="profile-image">
+                    </div>
+                    <h3 class="card-title text-center">@Model.HO_TEN</h3>
+                    <p class="card-title text-center @(Model.TRANG_THAI == 0 ? "text-success" : "text-danger")">
+                        @if (Model.TRANG_THAI == 0)
+                        {
+                            <text>Hoạt động</text>
+                        }
+                        else
+                        {
+                            <text>Không hoạt động</text>
+                        }
+                    </p>
+                    <p class="card-text">
+                        <br />
+                        <strong>Ngày tham gia:</strong> @Model.NGAY_TAO.ToString("dd/MM/yyyy")<br>
+                        <br />
+                        <strong>Ngày sinh:</strong> @Model.NGAY_SINH.ToString("dd/MM/yyyy")<br>
+                        <br />
+                        <strong>Số điện thoại:</strong> @Model.SDT<br>
+                        <br />
+                        <strong>Email:</strong> @Model.EMAIL<br>
+                        <br />
+                        <strong>Căn cước công dân:</strong> @Model.CCCD<br>
+                        <br />
+                    </p>
+                    <a asp-controller="NguoiDung" asp-action="ThongTinCaNhan" class="btn btn-primary btn-block">Cập nhật thông tin cá nhân</a>
+                    <br>
+                </div>
+            </div>
+            <br><br>
+            <div class="card shadow" style="border-radius: 10px;">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Đổi mật khẩu</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="ThayDoiMatKhau" method="post">
+                        <div class="form-group">
+                            <label for="MatKhauCu">Mật khẩu cũ</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="MatKhauCu" name="MatKhauCu" placeholder="Nhập mật khẩu cũ" required />
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="toggleMatKhauCu">
+                                        <i id="eyeIconCu" class="fa fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="text-danger" id="validationMessageCu"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="MatKhauMoi">Mật khẩu mới</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="MatKhauMoi" name="MatKhauMoi" placeholder="Nhập mật khẩu mới" required />
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="toggleMatKhauMoi">
+                                        <i id="eyeIconMoi" class="fa fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="text-danger" id="validationMessageMoi"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="XacNhanMatKhauMoi">Xác nhận mật khẩu mới</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="XacNhanMatKhauMoi" name="XacNhanMatKhauMoi" placeholder="Xác nhận mật khẩu mới" required />
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="toggleXacNhanMatKhauMoi">
+                                        <i id="eyeIconXacNhanMoi" class="fa fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="text-danger" id="validationMessageXacNhanMoi"></span>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-custom btn-block">Thay đổi mật khẩu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .breadcrumb-section.breadcrumb-bg {
+            background-color: #F28123;
+            padding: 20px 0;
+        }
+
+        .profile-image-wrapper {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: #F28123;
+            color: #000;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary,
+        .btn-custom {
+            background-color: #F28123;
+            border-color: #F28123;
+            color: #000;
+            font-weight: bold;
+        }
+
+            .btn-primary:hover,
+            .btn-custom:hover {
+                background-color: #000;
+                border-color: #000;
+                color: #F28123;
+            }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group-append .input-group-text {
+            cursor: pointer;
+        }
+
+        .form-section-title {
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .text-danger {
+            font-size: 0.875rem;
+            color: #e3342f;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Toggle mật khẩu hiển thị
+            document.getElementById('toggleMatKhauCu').addEventListener('click', function () {
+                togglePasswordVisibility('MatKhauCu', 'eyeIconCu');
+            });
+
+            document.getElementById('toggleMatKhauMoi').addEventListener('click', function () {
+                togglePasswordVisibility('MatKhauMoi', 'eyeIconMoi');
+            });
+
+            document.getElementById('toggleXacNhanMatKhauMoi').addEventListener('click', function () {
+                togglePasswordVisibility('XacNhanMatKhauMoi', 'eyeIconXacNhanMoi');
+            });
+
+            function togglePasswordVisibility(inputId, iconId) {
+                const passwordInput = document.getElementById(inputId);
+                const icon = document.getElementById(iconId);
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                icon.classList.toggle('fa-eye-slash');
+            }
+        });
+    </script>
+}

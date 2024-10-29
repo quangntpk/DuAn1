@@ -1,25 +1,232 @@
 ﻿@model WebBanThatLung.Models.NguoiDungModel
 
 @{
-    ViewData["Title"] = "Trang cá nhân";
+    ViewData["Title"] = "Trang cá nhân Admin";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Trang cá nhân</h1>
 
-<form asp-action="ChinhSuaThongTin" method="post">
-    <div class="form-group">
-        <label for="HoTen">Họ tên</label>
-        <input type="text" class="form-control" id="HoTen" name="HoTen" value="@Model.HO_TEN" required />
+@if (ViewBag.ThanhCong != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.ThanhCong
     </div>
-    <div class="form-group">
-        <label for="SoDienThoai">Số điện thoại</label>
-        <input type="text" class="form-control" id="SoDienThoai" name="SoDienThoai" value="@Model.SDT" required />
-    </div>
-    <div class="form-group">
-        <label for="Email">Email</label>
-        <input type="email" class="form-control" id="Email" name="email" value="@Model.EMAIL" required />
-    </div>
+}
 
-    <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
-</form>
+@if (ViewBag.ThatBai != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ThatBai
+    </div>
+}
+
+<style>
+    .form-section-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        margin-left: 0;
+        color: #F28022; /* Màu tiêu đề đồng bộ */
+    }
+
+    .status-active {
+        color: green;
+    }
+
+    .status-inactive {
+        color: red;
+    }
+
+    .form-control,
+    .btn-custom {
+        width: 100%;
+    }
+
+    .card {
+        border-radius: 10px;
+    }
+
+    .card-header {
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        background-color: #F28022; /* Màu nền thẻ card đồng bộ */
+    }
+
+        .card-header h4 {
+            color: #000000; /* Màu chữ tiêu đề thẻ card */
+        }
+
+    .btn-custom {
+        background-color: #F28022;
+        border-color: #F28022;
+        color: #000000;
+        font-weight: bold;
+        border-radius: 5px; /* Đổi bo góc nút bấm */
+    }
+
+        .btn-custom:hover {
+            background-color: #000000;
+            border-color: #000000;
+            color: #F28022;
+        }
+
+    .text-danger {
+        color: red;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card" style="margin: 50px 0px 50px 0px">
+                <div class="card-header" style="border-radius: 10px 10px 0px 0px">
+                    <h4 class="card-title mb-0">Trang cá nhân</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Phần thông tin cá nhân -->
+                        <div class="col-md-6 mb-4">
+                            <h5 class="form-section-title">Thông tin cá nhân</h5>
+                            <form asp-action="ChinhSuaThongTin" method="post" enctype="multipart/form-data">
+
+                                <div class="form-group">
+                                    <label for="TaiKhoan">Tài Khoản</label>
+                                    <input type="text" class="form-control" id="TaiKhoan" name="TaiKhoan" value="@Model.TAI_KHOAN" readonly />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="VaiTro">Vai trò</label>
+                                    <input type="text" class="form-control" id="VaiTro" value="@(Model.VAI_TRO == 1 ? "Admin" : "Người dùng")" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label for="NgayTao">Ngày tạo</label>
+                                    <input type="text" class="form-control" id="NgayTao" value="@Model.NGAY_TAO.ToString("dd/MM/yyyy")" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label for="TrangThai">Trạng thái</label>
+                                    <input type="text" class="form-control @(Model.TRANG_THAI == 0 ? "status-active" : "status-inactive")" id="TrangThai" value="@(Model.TRANG_THAI == 0 ? "Hoạt động" : "Khóa")" readonly />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="HoTen">Họ tên</label>
+                                    <input type="text" class="form-control" id="HoTen" name="HoTen" value="@Model.HO_TEN" minlength="6" required />
+                                    <span asp-validation-for="HO_TEN" class="text-danger"></span>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="NgaySinh">Ngày sinh</label>
+                                    <input type="date" class="form-control" id="NgaySinh" name="NGAY_SINH" value="@Model.NGAY_SINH.ToString("yyyy-MM-dd")" required />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="SDT">Số điện thoại mới</label>
+                                    <input type="text" class="form-control" id="SoDienThoai" name="SoDienThoai" value="@Model.SDT" maxlength="10" placeholder="Nhập số điện thoại mới" pattern="\d{10}" title="Số điện thoại chỉ có thể chứa 10 chữ số" inputmode="numeric" />
+                                    <span asp-validation-for="SDT" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="@Model.EMAIL" required />
+                                    <span asp-validation-for="EMAIL" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="CCCD">Số căn cước công dân</label>
+                                    <input type="text" class="form-control" id="cccd" name="cccd" value="@Model.CCCD" maxlength="10" pattern="\d{10}" title="Số căn cước công dân phải là 10 chữ số." required />
+                                    <span asp-validation-for="CCCD" class="text-danger"></span>
+                                </div>
+
+
+
+
+
+                                <button type="submit" class="btn btn-custom" style="margin-top: 10px;">Cập nhật thông tin</button>
+                            </form>
+
+                        </div>
+
+                        <!-- Phần thay đổi mật khẩu -->
+                        <div class="col-md-6 mb-4">
+                            <h5 class="form-section-title">Thay mật khẩu</h5>
+                            <form asp-action="ThayDoiMatKhau" method="post">
+                                <div class="form-group">
+                                    <label for="MatKhauCu">Mật khẩu cũ</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="MatKhauCu" name="MatKhauCu" placeholder="Nhập mật khẩu cũ" required />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="toggleMatKhauCu">
+                                                <i id="eyeIconCu" class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span class="text-danger" id="validationMessageCu"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="MatKhauMoi">Mật khẩu mới</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="MatKhauMoi" name="MatKhauMoi" placeholder="Nhập mật khẩu mới" required />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="toggleMatKhauMoi">
+                                                <i id="eyeIconMoi" class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span class="text-danger" id="validationMessageMoi"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="XacNhanMatKhauMoi">Xác nhận mật khẩu mới</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="XacNhanMatKhauMoi" name="XacNhanMatKhauMoi" placeholder="Xác nhận mật khẩu mới" required />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="toggleXacNhanMatKhauMoi">
+                                                <i id="eyeIconXacNhanMoi" class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <span class="text-danger" id="validationMessageXacNhanMoi"></span>
+                                </div>
+
+                                <button type="submit" class="btn btn-custom" style="margin-top: 10px;">Thay đổi mật khẩu</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Toggle mật khẩu hiển thị
+        document.getElementById('toggleMatKhauCu').addEventListener('click', function () {
+            togglePasswordVisibility('MatKhauCu', 'eyeIconCu');
+        });
+
+        document.getElementById('toggleMatKhauMoi').addEventListener('click', function () {
+            togglePasswordVisibility('MatKhauMoi', 'eyeIconMoi');
+        });
+
+        document.getElementById('toggleXacNhanMatKhauMoi').addEventListener('click', function () {
+            togglePasswordVisibility('XacNhanMatKhauMoi', 'eyeIconXacNhanMoi');
+        });
+
+        function togglePasswordVisibility(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            icon.classList.toggle('fa-eye-slash');
+        }
+    });
+</script>

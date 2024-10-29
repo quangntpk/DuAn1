@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<WebBanThatLung.Models.DonHangModel>
 
 @{
-    ViewData["Title"] = "DonHang";
+    ViewData["Title"] = "Đơn Hàng";
     Layout = "~/Areas/NhanVien/Views/Shared/_LayoutNhanVien.cshtml";
 }
 
@@ -14,7 +14,7 @@
 <div class="modal fade" id="huyDonModal" tabindex="-1" aria-labelledby="huyDonModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form asp-controller="DonHangAdmin" asp-action="HuyDon" method="post">
+            <form asp-controller="DonHangNhanVien" asp-action="HuyDon" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="huyDonModalLabel">Nhập lý do hủy đơn hàng</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -52,6 +52,7 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Số lượng</th>
                                 <th>Giá</th>
+                                <th>Màu</th>
                                 <th>Thành tiền</th>
                             </tr>
                         </thead>
@@ -141,7 +142,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <form asp-controller="DonHangAdmin" asp-action="DuyetDon" method="post">
+                                                            <form asp-controller="DonHangNhanVien" asp-action="DuyetDon" method="post">
                                                                 <input type="hidden" name="id" value="@item.ID_DON_HANG" />
                                                                 <button type="submit" class="btn btn-link btn-primary">
                                                                     <i class="fas fa-check"></i>
@@ -203,7 +204,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <form asp-controller="DonHangAdmin" asp-action="HoanThanh" method="post">
+                                                            <form asp-controller="DonHangNhanVien" asp-action="HoanThanh" method="post">
                                                                 <input type="hidden" name="id" value="@item.ID_DON_HANG" />
                                                                 <button type="submit" class="btn btn-link btn-primary">
                                                                     <i class="fas fa-check"></i> <!-- Icon Hoàn thành -->
@@ -211,8 +212,8 @@
                                                             </form>
                                                         </div>
                                                         <div class="form-button-action">
-                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
-                                                                <i class="fas fa-align-justify"></i> <!-- Icon Chi tiết -->
+                                                            <button type="button" class="btn btn-link btn-secondary" onclick="loadChiTietDonHang(@item.ID_DON_HANG)">
+                                                                <i class="fas fa-bars"></i>
                                                             </button>
                                                         </div>
                                                     </td>
@@ -259,8 +260,8 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
-                                                                <i class="fas fa-align-justify"></i> <!-- Icon Chi tiết -->
+                                                            <button type="button" class="btn btn-link btn-secondary" onclick="loadChiTietDonHang(@item.ID_DON_HANG)">
+                                                                <i class="fas fa-bars"></i>
                                                             </button>
                                                         </div>
                                                     </td>
@@ -286,7 +287,7 @@
 
     function loadChiTietDonHang(id) {
         $.ajax({
-            url: '/Admin/DonHangAdmin/ChiTiet/' + id,
+            url: '/NhanVien/DonHangNhanVien/ChiTiet/' + id,
             type: 'GET',
             success: function (data) {
                 // Xóa nội dung cũ trong bảng chi tiết sản phẩm
@@ -299,6 +300,7 @@
                         '<td>' + item.tenSanPham + '</td>' +
                         '<td>' + item.soLuong + '</td>' +
                         '<td>' + item.gia + '</td>' +
+                        '<td>' + item.mauSP + '</td>' +
                         '<td>' + item.thanhTien + '</td>' +
                         '</tr>'
                     );
@@ -307,7 +309,7 @@
                 $('#tenNguoiNhan').text(data.nguoiDung.tenNguoiNhan);
                 $('#diaChi').text(data.nguoiDung.diaChi);
                 $('#soDienThoai').text(data.nguoiDung.soDienThoai);
-                $('#tenNguoiDat').text(data.nguoiDung.tenNguoiDat); // Thêm thông tin người đặt
+                $('#tenNguoiDat').text(data.nguoiDung.tenNguoiDat);
                 $('#ngayDat').text(data.ngayDat);
                 $('#trangThaiDonHang').text(data.trangThaiDonHang);
                 $('#trangThaiThanhToan').text(data.trangThaiThanhToan);

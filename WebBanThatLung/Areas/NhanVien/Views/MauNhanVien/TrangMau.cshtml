@@ -70,7 +70,7 @@
                                             <td>@item.MAU</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a type="button" class="btn btn-link btn-primary btn-lg" asp-controller="MauAdmin" asp-action="Edit" asp-route-id="@item.ID_MAU">
+                                                    <a type="button" class="btn btn-link btn-primary btn-lg" asp-controller="MauNhanVien" asp-action="Edit" asp-route-id="@item.ID_MAU">
                                                         <i class="fa fa-edit"></i> Sửa
                                                     </a>
                                                     <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_MAU)">
@@ -119,7 +119,7 @@
 
                             function editLoaiSanPham(id) {
                                 $.ajax({
-                                    url: '@Url.Action("GetLoaiSanPham", "LoaiNhanVien")/' + id,
+                                    url: '@Url.Action("GetLoaiSanPham", "LoaiAdmin")/' + id,
                                     type: 'GET',
                                     success: function (data) {
                                         $('#editId').val(data.id);

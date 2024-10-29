@@ -6,7 +6,7 @@ using WebBanThatLung.Models;
 using WebBanThatLung.Repositoty;
 using WebBanThatLung.ViewModels;
 
-namespace WebBanThatLung.Areas.Admin.Controllers
+namespace WebBanThatLung.Areas.NhanVien.Controllers
 {
     [Area("NhanVien")]
     public class LoaiNhanVienController : Controller
@@ -125,7 +125,6 @@ namespace WebBanThatLung.Areas.Admin.Controllers
 
             return Json(loaiSanPham);
         }
-
 
 
     }

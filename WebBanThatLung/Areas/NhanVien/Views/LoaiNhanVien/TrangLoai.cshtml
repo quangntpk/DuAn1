@@ -19,6 +19,7 @@
                             </button>
                         </div>
                     </div>
+
                     <div class="card-body">
                         <!-- Add Modal -->
                         <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -70,7 +71,7 @@
                                             <td>@item.TEN_LOAI_SAN_PHAM</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a type="button" class="btn btn-link btn-primary btn-lg" asp-controller="LoaiAdmin" asp-action="Edit" asp-route-id="@item.ID_LOAI_SAN_PHAM">
+                                                    <a type="button" class="btn btn-link btn-primary btn-lg" asp-controller="LoaiNhanVien" asp-action="Edit" asp-route-id="@item.ID_LOAI_SAN_PHAM">
                                                         <i class="fa fa-edit"></i> Sửa
                                                     </a>
                                                     <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_LOAI_SAN_PHAM)">
@@ -119,7 +120,7 @@
 
                             function editLoaiSanPham(id) {
                                 $.ajax({
-                                    url: '@Url.Action("GetLoaiSanPham", "LoaiNhanVien")/' + id,
+                                    url: '@Url.Action("GetLoaiSanPham", "LoaiAdmin")/' + id,
                                     type: 'GET',
                                     success: function (data) {
                                         $('#editId').val(data.id);

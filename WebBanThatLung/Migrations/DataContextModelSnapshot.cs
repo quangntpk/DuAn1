@@ -39,6 +39,10 @@ namespace WebBanThatLung.Migrations
                     b.Property<int>("ID_SAN_PHAM")
                         .HasColumnType("int");
 
+                    b.Property<string>("MauSanPham")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SO_LUONG")
                         .HasColumnType("int");
 
@@ -124,14 +128,19 @@ namespace WebBanThatLung.Migrations
                     b.Property<int>("ID_SAN_PHAM")
                         .HasColumnType("int");
 
-                    b.Property<int>("MAU_SP")
-                        .HasColumnType("int");
+                    b.Property<string>("MAU_SP")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SO_LUONG_GH")
                         .HasColumnType("int");
 
                     b.Property<decimal>("THANH_TIEN")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TRANG_THAI")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID_GIO_HANG");
 
@@ -208,7 +217,11 @@ namespace WebBanThatLung.Migrations
 
                     b.Property<string>("CCCD")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
+                    b.Property<int>("CancelCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("EMAIL")
                         .IsRequired()
@@ -223,6 +236,9 @@ namespace WebBanThatLung.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
+                    b.Property<DateTime?>("LockoutEndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("MAT_KHAU")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -236,7 +252,8 @@ namespace WebBanThatLung.Migrations
 
                     b.Property<string>("SDT")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("TAI_KHOAN")
                         .IsRequired()
@@ -251,6 +268,29 @@ namespace WebBanThatLung.Migrations
                     b.HasKey("ID_NGUOI_DUNG");
 
                     b.ToTable("NGUOI_DUNGs");
+                });
+
+            modelBuilder.Entity("WebBanThatLung.Models.SanPhamMauModel", b =>
+                {
+                    b.Property<int>("ID_MauSanPham")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_MauSanPham"), 1L, 1);
+
+                    b.Property<int>("ID_MAU")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ID_SAN_PHAM")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID_MauSanPham");
+
+                    b.HasIndex("ID_MAU");
+
+                    b.HasIndex("ID_SAN_PHAM");
+
+                    b.ToTable("SAN_PHAM_MAUs");
                 });
 
             modelBuilder.Entity("WebBanThatLung.Models.SanPhamModel", b =>
@@ -269,9 +309,6 @@ namespace WebBanThatLung.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ID_LOAI_SAN_PHAM")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ID_MAU")
                         .HasColumnType("int");
 
                     b.Property<int>("ID_THUONG_HIEU")
@@ -294,8 +331,6 @@ namespace WebBanThatLung.Migrations
                     b.HasKey("ID_SAN_PHAM");
 
                     b.HasIndex("ID_LOAI_SAN_PHAM");
-
-                    b.HasIndex("ID_MAU");
 
                     b.HasIndex("ID_THUONG_HIEU");
 
@@ -385,17 +420,30 @@ namespace WebBanThatLung.Migrations
                     b.Navigation("SAN_PHAM");
                 });
 
+            modelBuilder.Entity("WebBanThatLung.Models.SanPhamMauModel", b =>
+                {
+                    b.HasOne("WebBanThatLung.Models.MauModel", "Mau")
+                        .WithMany()
+                        .HasForeignKey("ID_MAU")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebBanThatLung.Models.SanPhamModel", "SanPham")
+                        .WithMany("SanPhamMau")
+                        .HasForeignKey("ID_SAN_PHAM")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mau");
+
+                    b.Navigation("SanPham");
+                });
+
             modelBuilder.Entity("WebBanThatLung.Models.SanPhamModel", b =>
                 {
                     b.HasOne("WebBanThatLung.Models.LoaiSanPhamModel", "LOAI_SAN_PHAM")
                         .WithMany()
                         .HasForeignKey("ID_LOAI_SAN_PHAM")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebBanThatLung.Models.MauModel", "MAU")
-                        .WithMany()
-                        .HasForeignKey("ID_MAU")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -406,8 +454,6 @@ namespace WebBanThatLung.Migrations
                         .IsRequired();
 
                     b.Navigation("LOAI_SAN_PHAM");
-
-                    b.Navigation("MAU");
 
                     b.Navigation("THUONG_HIEU");
                 });
@@ -420,6 +466,8 @@ namespace WebBanThatLung.Migrations
             modelBuilder.Entity("WebBanThatLung.Models.SanPhamModel", b =>
                 {
                     b.Navigation("HINH_ANH");
+
+                    b.Navigation("SanPhamMau");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <!-- favicon -->
+    <script src="https://kit.fontawesome.com/566260645a.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" type="image/png" href="~/image/Lo-go_1.png">
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
@@ -30,10 +31,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 
     <style>
-        h1,h2,h3,h4,h5,h6, a, label, p, div, input{
+        h1, h2, h3, h4, h5, h6, a, label, p, div, input {
             font-family: 'Roboto', sans-serif !important;
         }
+
+        #world {
+            position: absolute;
+            right: calc(100% - 420px); 
+            top: -14px;
+            font-size: 20px; 
+            color: white;
+        }
     </style>
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <!--PreLoader-->
@@ -52,7 +62,7 @@
                         <!-- logo -->
                         <div class="site-logo">
                             <a asp-controller="Home" asp-action="Index">
-                                <img src="~/image/Lo-go.png" alt="">
+                                <img src="~/image/LogoteamTwo.png" alt="">
                             </a>
                         </div>
                         <!-- logo -->
@@ -63,7 +73,7 @@
                                     <a asp-controller="Home" asp-action="Index">Trang chủ</a>
                                 </li>
                                 <li><a asp-controller="CuaHang" asp-action="Index">Cửa hàng</a></li>
-                                <li><a asp-controller="CuaHang" asp-action="Index">Liên hệ</a></li>
+                                <li><a asp-controller="LienHe" asp-action="LienHe">Liên hệ</a></li>
 
 
                                 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
@@ -81,17 +91,21 @@
                                             <a class="shopping-cart" asp-controller="GioHang" asp-action="TrangGioHang">
                                                 <i class="fas fa-shopping-cart"></i>
                                             </a>
-                                        <a>
-                                            <i class="fas fa-user"></i> @userName
-                                        </a>
-                                        <ul class="sub-menu">
-                                            <li><a class="dropdown-item" asp-controller="NguoiDung" asp-action="ThongTinCaNhan">Thông tin cá nhân</a></li>
-            
-                                            <li> <a class="dropdown-item" asp-controller="DonHang" asp-action="Index">Đơn mua</a></li>
-                                            <li> <a class="dropdown-item" asp-controller="NguoiDung" asp-action="Logout">Đăng xuất</a></li>
-                                        </ul>
+                                            <a>
+                                                <i class="fas fa-user"></i> @userName
+                                            </a>
+                                            <ul class="sub-menu">
+                                                <li><a class="dropdown-item" asp-controller="NguoiDung" asp-action="TrangCaNhan">Thông tin cá nhân</a></li>
+
+                                                <li> <a class="dropdown-item" asp-controller="DonHang" asp-action="DonMua">Đơn mua</a></li>
+                                                <li> <a class="dropdown-item" asp-controller="NguoiDung" asp-action="Logout">Đăng xuất</a></li>
+                                            </ul>
                                         </div>
+             
+                                        <partial name="_Header" />
+                                        @await Html.PartialAsync("_Header")
                                     </li>
+
 
                                 }
                                 else
@@ -101,6 +115,9 @@
                                             <a class="shopping-cart" asp-controller="GioHang" asp-action="TrangGioHang"><i class="fas fa-shopping-cart"></i></a>
                                             <a class="mobile-hide search-bar-icon" asp-controller="NguoiDung" asp-action="Login"><i class="fas fa-user"></i> Đăng nhập</a>
                                         </div>
+                                        
+                                        <partial name="_Header" />
+                                        @await Html.PartialAsync("_Header")
                                     </li>
                                 }
                             </ul>
@@ -119,6 +136,7 @@
         @await Html.PartialAsync("_Footer")
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- jquery -->
     <script src="~/Users/assets/js/jquery-1.11.3.min.js"></script>
     <!-- bootstrap -->

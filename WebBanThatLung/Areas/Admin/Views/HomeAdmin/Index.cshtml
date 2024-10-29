@@ -1,7 +1,8 @@
-﻿@model IEnumerable<SanPhamModel>
+﻿@model X.PagedList.IPagedList<WebBanThatLung.Models.SanPhamModel>
+@using X.PagedList.Mvc.Core
 
 @{
-    ViewData["Title"] = "Quản lý sản  phẩm";
+    ViewData["Title"] = "Quản lý sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -13,7 +14,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center">
-                            <h4 class="card-title">Sản phẩm </h4>
+                            <h4 class="card-title">Sản phẩm</h4>
                             <a class="btn btn-primary btn-round ms-auto" asp-controller="HomeAdmin" asp-action="Create">
                                 <i class="fa fa-plus"></i> Thêm sản phẩm
                             </a>
@@ -21,8 +22,14 @@
                     </div>
                     <div class="card-body">
 
+                        <!-- Thanh tìm kiếm -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <input type="text" id="search-input" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+                            </div>
+                        </div>
 
-                        <!-- Table -->
+                        <!-- Bảng sản phẩm -->
                         <div class="table-responsive">
                             <table id="add-row" class="display table table-striped table-hover">
                                 <thead>
@@ -30,21 +37,16 @@
                                         <th>Hình ảnh</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
+                                  
                                         <th>Giá</th>
-
                                         <th>Ngày tạo</th>
                                         <th>Chất liệu</th>
                                         <th style="width: 10%">Thao tác</th>
                                     </tr>
                                 </thead>
-
-
-
-
-                                <tbody>
+                                <tbody id="product-tbody">
                                     @foreach (var item in Model)
                                     {
-
                                         var hinhAnhDauTien = item.HINH_ANH?.FirstOrDefault()?.TEN_HINH_ANH;
                                         <tr>
                                             <td>
@@ -59,6 +61,7 @@
                                             </td>
                                             <td>@item.TEN_SAN_PHAM</td>
                                             <td>@item.SO_LUONG</td>
+                                           
                                             <td>@item.GIA</td>
                                             <td>@item.NGAY_TAO.ToString("dd/MM/yyyy")</td>
                                             <td>@item.CHAT_LIEU</td>
@@ -78,63 +81,136 @@
                             </table>
                         </div>
 
-                        <!-- Delete Modal -->
-                        <div class="modal fade" id="deleteRowModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header border-0">
-                                        <h5 class="modal-title">
-                                            <span class="fw-mediumbold"> Xóa</span>
-                                            <span class="fw-light"> loại sản phẩm</span>
-                                        </h5>
-                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form asp-action="Delete" method="post">
-                                            <input type="hidden" id="deleteId" name="id" />
-                                            <p>Bạn có chắc chắn muốn xóa  sản phẩm này?</p>
-                                            <div class="modal-footer border-0">
-                                                <button type="submit" class="btn btn-primary">Xóa</button>
-                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                        <script>
-                            function setDeleteId(id) {
-                                $('#deleteId').val(id);
-                            }
-
-                            function editLoaiSanPham(id) {
-                                $.ajax({
-                                    url: '@Url.Action("GetLoaiSanPham", "LoaiAdmin")/' + id,
-                                    type: 'GET',
-                                    success: function (data) {
-                                        $('#editId').val(data.id);
-                                        $('#editTEN_LOAI_SAN_PHAM').val(data.tenLoaiSanPham);
-                                        $('#editRowModal').modal('show');
-                                    },
-                                    error: function () {
-                                        alert('Không thể lấy dữ liệu loại sản phẩm.');
-                                    }
-                                });
-                            }
-                        </script>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pagination-wrap d-flex justify-content-center">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+       {
+           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+           DisplayLinkToLastPage = PagedListDisplayMode.Always,
+           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+           DisplayLinkToNextPage = PagedListDisplayMode.Always,
+           LinkToPreviousPageFormat = "<i class='fas fa-chevron-left'></i>",
+           LinkToNextPageFormat = "<i class='fas fa-chevron-right'></i>",
 
-@{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+       })
+        </div>
+    </div>
+</div>
 
+<!-- Modal Xóa -->
+<div class="modal fade" id="deleteRowModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">
+                    <span class="fw-mediumbold">Xóa</span>
+                    <span class="fw-light">sản phẩm</span>
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="HomeAdmin" asp-action="Delete" method="post">
+                    <input type="hidden" id="deleteId" name="id" />
+                    <p>Bạn có chắc chắn muốn xóa sản phẩm này?</p>
+                    <div class="modal-footer border-0">
+                        <button type="submit" class="btn btn-primary">Xóa</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
+<style>
+    .pagination-wrap .pagination a,
+    .pagination-wrap .pagination span {
+        display: inline-block;
+        margin: 0 5px;
+        padding: 10px 15px;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        color: #007bff;
+        font-size: 1.2em;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .pagination-wrap .pagination a:hover,
+        .pagination-wrap .pagination span:hover {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+    .pagination-wrap .pagination .active span {
+        background-color: #007bff;
+        color: #ffffff;
+        border-radius: 50%;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('search-input');
+        const productTbody = document.getElementById('product-tbody');
+
+        // Hàm loại bỏ dấu tiếng Việt
+        function removeVietnameseTones(str) {
+            const accents = [
+                { 'a': /À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g },
+                { 'a': /à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g },
+                { 'e': /È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g },
+                { 'e': /è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g },
+                { 'i': /Ì|Í|Ị|Ỉ|Ĩ/g },
+                { 'i': /ì|í|ị|ỉ|ĩ/g },
+                { 'o': /Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g },
+                { 'o': /ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g },
+                { 'u': /Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g },
+                { 'u': /ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g },
+                { 'y': /Ỳ|Ý|Ỵ|Ỷ|Ỹ/g },
+                { 'y': /ỳ|ý|ỵ|ỷ|ỹ/g },
+                { 'd': /Đ/g },
+                { 'd': /đ/g }
+            ];
+            accents.forEach(accent => {
+                Object.keys(accent).forEach(key => {
+                    str = str.replace(accent[key], key);
+                });
+            });
+            return str;
+        }
+
+        // Hàm tìm kiếm sản phẩm
+        function filterProducts() {
+            const searchTerm = removeVietnameseTones(searchInput.value.toLowerCase());
+            const rows = productTbody.getElementsByTagName('tr');
+
+            Array.from(rows).forEach(function (row) {
+                const productName = removeVietnameseTones(row.getElementsByTagName('td')[1].innerText.toLowerCase());
+                if (productName.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Thêm sự kiện cho thanh tìm kiếm
+        searchInput.addEventListener('input', filterProducts);
+
+        // Hàm đặt ID cho sản phẩm cần xóa
+        window.setDeleteId = function (id) {
+            $('#deleteId').val(id);
+        };
+    });
+</script>

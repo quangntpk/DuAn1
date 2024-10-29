@@ -93,13 +93,13 @@ namespace WebBanThatLung.Areas.Admin.Controllers
                 TempData["ThatBai"] = "Không tìm thấy màu để xóa";
                 return RedirectToAction(nameof(TrangMau));
             }
-
+/*
             var sanPhams = await _dataContext.SAN_PHAMs.Where(sp => sp.ID_MAU == MAU.ID_MAU).ToListAsync();
             if (sanPhams.Any())
             {
                 TempData["ThatBai"] = "Không thể xóa màu này vì còn sản phẩm đang con màu này";
                 return RedirectToAction(nameof(TrangMau));
-            }
+            }*/
 
             _dataContext.MAUs.Remove(MAU);
             await _dataContext.SaveChangesAsync();

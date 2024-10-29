@@ -1,7 +1,7 @@
 ﻿@model WebBanThatLung.ViewModels.ThuongHieuViewModel
 
 @{
-    ViewData["Title"] = "TrangThuongHieu";
+    ViewData["Title"] = "Trang Thương Hiệu";
     Layout = "~/Areas/NhanVien/Views/Shared/_LayoutNhanVien.cshtml";
 }
 
@@ -70,7 +70,7 @@
                                             <td>@item.TEN_THUONG_HIEU</td>
                                             <td>
                                                 <div class="form-button-action">
-                                                    <a type="button" class="btn btn-link btn-primary btn-lg" asp-controller="ThuongHieuAdmin" asp-action="Edit" asp-route-id="@item.ID_THUONG_HIEU">
+                                                    <a type="button" class="btn btn-link btn-primary btn-lg" asp-controller="ThuongHieuNhanVien" asp-action="Edit" asp-route-id="@item.ID_THUONG_HIEU">
                                                         <i class="fa fa-edit"></i> Sửa
                                                     </a>
                                                     <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_THUONG_HIEU)">
@@ -117,7 +117,7 @@
                                 $('#deleteId').val(id);
                             }
 
-
+                           
                         </script>
                     </div>
                 </div>

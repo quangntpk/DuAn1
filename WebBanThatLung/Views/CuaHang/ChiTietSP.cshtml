@@ -5,6 +5,170 @@
     var culture = System.Globalization.CultureInfo.InvariantCulture;
 }
 
+
+<style>
+
+    /* Hiệu ứng hover cho hình ảnh sản phẩm */
+    .single-product-item img {
+        transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
+        border-radius: 15px; /* Làm cho hình ảnh có góc bo tròn */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Bóng mờ cơ bản */
+    }
+
+        .single-product-item img:hover {
+            transform: scale(1.1) rotate(3deg); /* Phóng to và xoay nhẹ hình ảnh khi hover */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Tăng bóng mờ khi hover */
+            filter: brightness(1.3) contrast(1.2); /* Tăng độ sáng và độ tương phản khi hover */
+        }
+
+    /* Hiệu ứng hover cho tiêu đề sản phẩm */
+    .single-product-item h3 {
+        position: relative;
+        transition: color 0.4s ease, text-shadow 0.4s ease;
+        font-weight: bold;
+        color: #333;
+    }
+
+        .single-product-item h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4682B4; /* Đường gạch chân màu xanh dương */
+            transition: width 0.4s ease; /* Hiệu ứng mở rộng khi hover */
+        }
+
+        .single-product-item h3:hover::after {
+            width: 100%; /* Mở rộng đường gạch chân khi hover */
+        }
+
+        .single-product-item h3:hover {
+            color: #4682B4; /* Đổi màu tiêu đề khi hover */
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Thêm hiệu ứng bóng mờ cho tiêu đề */
+        }
+
+    /* Hiệu ứng hover cho nút thêm vào giỏ hàng */
+    .cart-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border-radius: 30px;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        position: relative;
+        overflow: hidden;
+        transition: background 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+        background: linear-gradient(to right, #f28123, #f56342);
+        color: #fff;
+    }
+
+        .cart-btn:hover {
+            transform: scale(1.1); /* Phóng to nút khi hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Thêm bóng mờ khi hover */
+        }
+
+        .cart-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.1); /* Gradient sáng */
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.4s ease;
+        }
+
+        .cart-btn:hover::before {
+            transform: translate(-50%, -50%) scale(1); /* Mở rộng gradient sáng khi hover */
+        }
+
+    /* Hiệu ứng hover cho các liên kết trong phân trang */
+    .pagination-wrap ul li a {
+        display: inline-block;
+        padding: 12px 18px;
+        border-radius: 25px;
+        transition: color 0.4s ease, background-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+        color: #333;
+        font-weight: bold;
+        text-decoration: none;
+        background: linear-gradient(to right, #ff7e5f, #feb47b);
+        color: #fff;
+    }
+
+        .pagination-wrap ul li a:hover {
+            transform: translateY(-5px); /* Di chuyển liên kết lên trên khi hover */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Thêm bóng mờ cho liên kết khi hover */
+        }
+
+        /* Hiệu ứng hover cho các liên kết phân trang hiện tại */
+        .pagination-wrap ul li a.active {
+            color: #fff; /* Đổi màu chữ khi là liên kết hiện tại */
+            background: linear-gradient(to right, #ff512f, #dd2476);
+        }
+
+    /* Cải tiến thêm cho carousel */
+    .carousel-inner {
+        border-radius: 15px; /* Bo tròn góc carousel */
+        overflow: hidden;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Bóng mờ cho carousel */
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        filter: invert(100%); /* Đổi màu biểu tượng điều hướng carousel */
+    }
+
+    .carousel-item img {
+        transition: transform 0.4s ease, filter 0.4s ease;
+    }
+
+        .carousel-item img:hover {
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+            filter: brightness(1.2); /* Tăng độ sáng khi hover */
+        }
+
+    /* Hiệu ứng hover cho các sản phẩm liên quan */
+    .single-product-item {
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        background: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Bóng mờ nhẹ cho sản phẩm */
+    }
+
+        .single-product-item:hover {
+            transform: translateY(-10px); /* Di chuyển sản phẩm lên trên khi hover */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Tăng bóng mờ khi hover */
+        }
+
+        /* Tiêu đề và giá sản phẩm liên quan */
+        .single-product-item h6 {
+            font-weight: bold;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .single-product-item h5 {
+            color: #f28123;
+            font-weight: bold;
+        }
+
+    .product-title {
+        transition: color 0.4s ease;
+    }
+
+        .product-title:hover {
+            color: #f56342; /* Đổi màu tiêu đề sản phẩm khi hover */
+        }
+
+
+</style>
+
+
 <div class="breadcrumb-section breadcrumb-bg">
     <div class="container">
         <div class="row">
@@ -62,11 +226,11 @@
 
                             <div class="form-group">
                                 <label for="SoLuong">Số lượng:</label>
-                                <div class="input-group">
+                                <div class="input-group" style="width: 150px">
                                     <div class="input-group-prepend">
                                         <button type="button" class="btn btn-outline-secondary btn-minus">-</button>
                                     </div>
-                                    <input style="width: 150px;" type="number" id="SoLuong" name="SoLuong" class="form-control text-center" value="1" min="1">
+                                    <input style="width: 350px;" type="number" id="SoLuong" name="SoLuong" class="form-control text-center" value="1" min="1">
                                     <div class="input-group-append">
                                         <button type="button" class="btn btn-outline-secondary btn-plus">+</button>
                                     </div>
@@ -81,7 +245,7 @@
                                         foreach (var mau in ViewBag.DanhSachMau)
                                         {
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input mau-radio" type="radio" name="Mau" id="Mau_@mau.ID_MAU" value="@mau.ID_MAU">
+                                                <input class="form-check-input mau-radio" type="radio" name="Mau" id="Mau_@mau.ID_MAU" value="@mau.MAU">
                                                 <label class="form-check-label" for="Mau_@mau.ID_MAU">@mau.MAU</label>
                                             </div>
                                         }
@@ -89,7 +253,7 @@
                                 </div>
                             </div>
 
-                            <div id="SoLuongConLaiDiv" class="alert alert-info" role="alert">
+                            <div id="SoLuongConLaiDiv" class="alert alert-Secondary" role="alert">
                                 <p id="SoLuongConLai" class="text-danger"></p>
                             </div>
 
@@ -113,21 +277,43 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <!-- Related products -->
-            <div class="col-lg-4 col-md-6 text-center">
-                <div class="single-product-item">
-                    <div class="product-image">
-                        <a href="single-product.html"><img src="assets/img/products/product-img-1.jpg" alt=""></a>
+        <div class="row product-lists" id="product-lists">
+            @if (ViewBag.SanPhamLienQuan != null)
+            {
+                foreach (var item in ViewBag.SanPhamLienQuan)
+                {
+                    <div class="col-md-3 text-center">
+                        <div class="single-product-item" style="height: 400px">
+                            <div class="product-image">
+                                <a asp-controller="CuaHang" asp-action="ChiTietSP" asp-route-id="@item.ID_SAN_PHAM">
+                                    @if (ViewBag.HinhAnhLienQuan != null)
+                                    {
+                                        foreach (var hinhAnh in ViewBag.HinhAnhLienQuan)
+                                        {
+                                            if (hinhAnh.ID_SAN_PHAM == item.ID_SAN_PHAM)
+                                            {
+                                                <img src="~/media/SanPham/@hinhAnh.TEN_HINH_ANH" alt="Hình ảnh liên quan" class="img-fluid" style="height: 200px" width="auto" />
+                                                break;
+                                            }
+                                        }
+                                    }
+                                </a>
+                            </div>
+                            <h6 class="product-title">@item.TEN_SAN_PHAM</h6>
+                            <h5><span></span>@item.GIA.ToString("N0", culture).Replace(",", ".") VNĐ</h5>
+                            <a asp-controller="CuaHang" asp-action="ChiTietSP" asp-route-id="@item.ID_SAN_PHAM" class="cart-btn">
+                                <i class="fas fa-shopping-cart"></i> Chi tiết sản phẩm
+                            </a>
+                        </div>
                     </div>
-                    <h3>Strawberry</h3>
-                    <p class="product-price"><span>Per Kg</span> 85$</p>
-                    <a href="cart.html" class="btn btn-primary">Add to Cart</a>
-                </div>
-            </div>
+                }
+            }
         </div>
     </div>
 </div>
+
+
+
 
 @section Scripts {
     <script>

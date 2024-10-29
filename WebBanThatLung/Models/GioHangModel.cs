@@ -13,9 +13,12 @@ namespace WebBanThatLung.Models
         public int ID_SAN_PHAM { get; set; }
         [ForeignKey("ID_SAN_PHAM")]
         public SanPhamModel SAN_PHAM { get; set; }
-        public int SO_LUONG_GH { get; set; }
+        public int SO_LUONG_GH { get; set; }    
         public decimal THANH_TIEN { get; set; } = 0;
         public decimal GIA { get; set; } = 0;
-        public int MAU_SP { get; set; }
+        public string MAU_SP { get; set; }
+        public string TRANG_THAI { set; get; } = "Chờ duyệt";
+
+
     }
 }

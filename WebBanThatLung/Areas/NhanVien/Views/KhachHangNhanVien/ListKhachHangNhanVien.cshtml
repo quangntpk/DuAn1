@@ -1,0 +1,210 @@
+﻿@model X.PagedList.IPagedList<WebBanThatLung.Models.NguoiDungModel>
+@using X.PagedList.Mvc.Core
+@{
+    ViewData["Title"] = "Danh sách khách hàng";
+    Layout = "~/Areas/NhanVien/Views/Shared/_LayoutNhanVien.cshtml";
+}
+
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <h4 class="card-title">Danh sách khách hàng</h4>
+                            <a class="btn btn-primary btn-round ms-auto" asp-controller="KhachHangNhanVien" asp-action="Create">
+                                <i class="fa fa-plus"></i> Thêm mới khách hàng
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Thanh tìm kiếm -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <input type="text" id="search-input" class="form-control" placeholder="Tìm kiếm khách hàng...">
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table id="add-row" class="display table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="col-hinh-anh">Hình ảnh</th>
+                                        <th class="col-ho-ten">Họ và tên</th>
+                                        <th class="col-sdt">Số điện thoại</th>
+                                        <th class="col-cccd">CCCD</th>
+                                        <th class="col-email">Email</th>
+                                        <th class="col-trang-thai">Trạng thái</th>
+                                        <th class="col-hanh-dong">Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employee-tbody">
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="id-column"><img style="object-fit: fill" src="~/media/KhachHang/@item.HINH_ANH" height="90" width="48" /></td>
+                                            <td style="width: 140px">@item.HO_TEN</td>
+                                            <td style="width: 170px">@item.SDT</td>
+                                            <td>@item.CCCD</td>
+                                            <td>@item.EMAIL</td>
+
+                                            @if (item.CancelCount >= 4)
+                                            {
+                                                <td class="text-danger">Tài khoản bị khóa</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-success">Hoạt động</td>
+                                            }
+
+                                            <td>
+                                                <div class="form-button-action">
+
+                                                    <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_NGUOI_DUNG)">
+                                                        <i class="fa fa-times"></i> Xóa
+                                                    </button>
+                                                    <form asp-action="ResetCancelCount" method="post" style="display:inline;">
+                                                        <input type="hidden" name="id" value="@item.ID_NGUOI_DUNG" />
+                                                        <button type="submit" class="btn btn-link btn-warning" style="margin-left: -239px; margin-top:60px">
+                                                            <i class="fa fa-refresh"></i> Đặt lại
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pagination-wrap d-flex justify-content-center">
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+                               {
+                                   DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                                   DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                                   DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                                   DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                                   LinkToPreviousPageFormat = "<i class='fas fa-chevron-left'></i>",
+                                   LinkToNextPageFormat = "<i class='fas fa-chevron-right'></i>",
+                               })
+                                </div>
+                            </div>
+                        </div>
+
+                        <style>
+                            .pagination-wrap .pagination a,
+                            .pagination-wrap .pagination span {
+                                display: inline-block;
+                                margin: 0 5px;
+                                padding: 10px 15px;
+                                border-radius: 50%;
+                                background-color: #f8f9fa;
+                                color: #007bff;
+                                font-size: 1.2em;
+                                text-decoration: none;
+                                transition: background-color 0.3s, color 0.3s;
+                            }
+
+                                .pagination-wrap .pagination a:hover,
+                                .pagination-wrap .pagination span:hover {
+                                    background-color: #007bff;
+                                    color: #ffffff;
+                                }
+
+                            .pagination-wrap .pagination .active span {
+                                background-color: #007bff;
+                                color: #ffffff;
+                                border-radius: 50%;
+                            }
+                        </style>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteRowModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header border-0">
+                                        <h5 class="modal-title">
+                                            <span class="fw-mediumbold"> Xóa</span>
+                                            <span class="fw-light"> khách hàng</span>
+                                        </h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form asp-action="Delete" method="post">
+                                            <input type="hidden" id="deleteId" name="id" />
+                                            <p>Bạn có chắc chắn muốn xóa khách hàng này?</p>
+                                            <div class="modal-footer border-0">
+                                                <button type="submit" class="btn btn-primary">Xóa</button>
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                            function setDeleteId(id) {
+                                $('#deleteId').val(id);
+                            }
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const searchInput = document.getElementById('search-input');
+                                const employeeTbody = document.getElementById('employee-tbody');
+
+                                // Hàm loại bỏ dấu tiếng Việt
+                                function removeVietnameseTones(str) {
+                                    const accentsMap = [
+                                        { base: 'a', letters: /[ÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴàáạảãâầấậẩẫăằắặẳẵ]/g },
+                                        { base: 'e', letters: /[ÈÉẸẺẼÊỀẾỆỂỄèéẹẻẽêềếệểễ]/g },
+                                        { base: 'i', letters: /[ÌÍỊỈĨìíịỉĩ]/g },
+                                        { base: 'o', letters: /[ÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠòóọỏõôồốộổỗơờớợởỡ]/g },
+                                        { base: 'u', letters: /[ÙÚỤỦŨƯỪỨỰỬỮùúụủũưừứựửữ]/g },
+                                        { base: 'y', letters: /[ỲÝỴỶỸỳýỵỷỹ]/g },
+                                        { base: 'd', letters: /[Đđ]/g },
+                                    ];
+                                    accentsMap.forEach(map => {
+                                        str = str.replace(map.letters, map.base);
+                                    });
+                                    return str;
+                                }
+
+                                // Hàm tìm kiếm khách hàng
+                                function filterEmployees() {
+                                    const searchTerm = removeVietnameseTones(searchInput.value.toLowerCase());
+                                    const rows = employeeTbody.getElementsByTagName('tr');
+
+                                    Array.from(rows).forEach(function (row) {
+                                        const employeeName = removeVietnameseTones(row.getElementsByTagName('td')[1].innerText.toLowerCase());
+                                        const employeePhone = row.getElementsByTagName('td')[2].innerText.toLowerCase();
+
+                                        if (employeeName.includes(searchTerm) || employeePhone.includes(searchTerm)) {
+                                            row.style.display = '';
+                                        } else {
+                                            row.style.display = 'none';
+                                        }
+                                    });
+                                }
+
+                                // Thêm sự kiện cho thanh tìm kiếm
+                                searchInput.addEventListener('input', filterEmployees);
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

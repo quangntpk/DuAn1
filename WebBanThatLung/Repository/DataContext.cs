@@ -18,8 +18,9 @@ namespace WebBanThatLung.Repositoty
         public DbSet<ChiTietDonHangModel> CHI_TIET_DON_HANGs { get; set; }
         public DbSet<NguoiDungModel> NGUOI_DUNGs { get; set; }
         public DbSet<GioHangModel> GIO_HANGs { get; set; }
+        public DbSet<SanPhamMauModel> SAN_PHAM_MAUs { get; set; }
 
-        
+
 
     }
 }

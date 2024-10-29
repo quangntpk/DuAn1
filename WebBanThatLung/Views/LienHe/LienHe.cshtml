@@ -1,0 +1,172 @@
+﻿@model WebBanThatLung.Models.LienHeModel
+
+@{
+    ViewBag.Title = "Liên hệ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p></p>
+                    <h1>Liên hệ</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="content-body">
+        <div id="contact-page" class="container">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <img src="~/image/that-lung-nam.jpg" class="img-fluid" alt="Alternate Text" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h4>Giới thiệu</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>Họ tên: Team-Two</p>
+                            <p>Code with my love <i class="fa fa-heart"></i></p>
+                            <div class="mt-2">
+                                <h6 class="mb-0">Email:</h6>
+                                <p><a href="mailto:teaamtow@gmail.com">TeaamTow@gmail.com</a></p>
+                            </div>
+                            <div class="mt-2">
+                                <h6 class="mb-0">Điện thoại:</h6>
+                                <p><a href="tel:0367219692">036-721-9692</a></p>
+                            </div>
+                            <div class="mt-2">
+                                <h6 class="mb-0">Website:</h6>
+                                <p><a href="https://localhost:7125/">Team-Two.com</a></p>
+                            </div>
+                            <div class="mt-2">
+                                <a href="https://www.facebook.com/zzazzquang" class="btn btn-sm btn-primary">Facebook</a>
+                                <a href="https://www.youtube.com/channel/UCtAFt8Kcstfge4oYaOAcxgw" class="btn btn-sm btn-primary">Youtube</a>
+                                <a href="https://www.tiktok.com/" class="btn btn-sm btn-primary">TikTok</a>
+                                <a href="https://www.instagram.com/zzazzquang/" class="btn btn-sm btn-primary">Instagram</a>
+                                <a href="https://discord.gg/M85kfAP2" class="btn btn-sm btn-primary">Discord</a>
+                            </div>
+                            <div>
+                                <img src="~/image/zalo.png"  />
+                            </div>
+                        </div>
+                    </div>
+                    <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12210.24681885916!2d108.075659!3d12.7105609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3171f7b6e379b675%3A0x72662967145555c0!2zVHJ1b25nIENhb8OqIGRhw7MgcG9seXRlY2huaWM!5e0!3m2!1svi!2s!4v1698473155913!5m2!1svi!2s"
+                            width="1084" height="350" allowfullscreen></iframe>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Gửi lời nhắn đến chúng tôi !!</h4>
+                        </div>
+                        <div class="card-body">
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success">
+                                    @TempData["SuccessMessage"]
+                                </div>
+                            }
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                <div class="alert alert-danger">
+                                    @TempData["ErrorMessage"]
+                                </div>
+                            }
+
+                            <form method="post" asp-action="SendMessage">
+                                <div class="form-group">
+                                    <input type="text" name="Name" class="form-control" placeholder="Họ tên của bạn" required />
+                                    @Html.ValidationMessageFor(model => model.Name)
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" name="Email" class="form-control" placeholder="Địa chỉ Email của bạn" required />
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="Phone" class="form-control" placeholder="Số điện thoại" required />
+                                    @Html.ValidationMessageFor(model => model.Phone)
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="Message" class="form-control" placeholder="Nhập lời nhắn của bạn" rows="10" required></textarea>
+                                    @Html.ValidationMessageFor(model => model.Message)
+                                </div>
+                                <button type="submit" class="btn btn-primary">Gửi lời nhắn 🚀</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .breadcrumb-section.breadcrumb-bg {
+        background-color: #F28123;
+        padding: 100px 0;
+    }
+
+    .breadcrumb-text h1 {
+        color: #fff;
+    }
+
+    .card {
+        border: 1px solid #F28123;
+        border-radius: 8px;
+    }
+
+    .card-header {
+        background-color: #F28123;
+        color: #fff;
+        border-bottom: 1px solid #fff;
+    }
+
+    .btn-primary {
+        background-color: #F28123;
+        border-color: #F28123;
+        color: #fff;
+        font-weight: bold;
+    }
+
+        .btn-primary:hover {
+            background-color: #000;
+            border-color: #000;
+            color: #F28123;
+        }
+
+    .form-control {
+        margin-bottom: 20px;
+    }
+
+        .form-control:focus {
+            border-color: #F28123;
+            box-shadow: 0 0 0 0.2rem rgba(242, 129, 35, 0.25);
+        }
+
+    .map {
+        border: 2px solid #F28123;
+        border-radius: 8px;
+    }
+
+    .img-fluid {
+        max-height: 400px;
+        object-fit: cover;
+    }
+
+    .card{
+        height: 515px;
+    }
+
+    .col-md-6{
+        padding-bottom: 20px;
+    }
+
+</style>

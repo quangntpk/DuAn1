@@ -24,6 +24,15 @@ namespace WebBanThatLung.Controllers
                              .Where(sp => sp.SO_LUONG > 0) 
                              .Take(8)
                              .ToList();
+
+            var sanphamnoibat = _dataContext.SAN_PHAMs
+                             .Include(sp => sp.HINH_ANH)
+                             .Where(sp => sp.SO_LUONG > 0)
+                             .Take(4)
+                             .OrderByDescending(s => s.NGAY_TAO)
+                             .ToList();
+
+            ViewBag.NoiBat = sanphamnoibat;
             return View(sanPham);
         }
 

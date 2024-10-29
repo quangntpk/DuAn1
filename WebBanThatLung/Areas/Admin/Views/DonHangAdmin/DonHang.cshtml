@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<WebBanThatLung.Models.DonHangModel>
 
 @{
-    ViewData["Title"] = "DonHang";
+    ViewData["Title"] = "Đơn Hàng";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -52,6 +52,7 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Số lượng</th>
                                 <th>Giá</th>
+                                <th>Màu</th>
                                 <th>Thành tiền</th>
                             </tr>
                         </thead>
@@ -212,8 +213,8 @@
                                                             </form>
                                                         </div>
                                                         <div class="form-button-action">
-                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
-                                                                <i class="fas fa-align-justify"></i> <!-- Icon Chi tiết -->
+                                                            <button type="button" class="btn btn-link btn-secondary" onclick="loadChiTietDonHang(@item.ID_DON_HANG)">
+                                                                <i class="fas fa-bars"></i>
                                                             </button>
                                                         </div>
                                                     </td>
@@ -260,8 +261,8 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-button-action">
-                                                            <button type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRowModal" onclick="setDeleteId(@item.ID_DON_HANG)">
-                                                                <i class="fas fa-align-justify"></i> <!-- Icon Chi tiết -->
+                                                            <button type="button" class="btn btn-link btn-secondary" onclick="loadChiTietDonHang(@item.ID_DON_HANG)">
+                                                                <i class="fas fa-bars"></i>
                                                             </button>
                                                         </div>
                                                     </td>
@@ -300,6 +301,7 @@
                         '<td>' + item.tenSanPham + '</td>' +
                         '<td>' + item.soLuong + '</td>' +
                         '<td>' + item.gia + '</td>' +
+                        '<td>' + item.mauSP + '</td>' +
                         '<td>' + item.thanhTien + '</td>' +
                         '</tr>'
                     );
@@ -308,7 +310,7 @@
                 $('#tenNguoiNhan').text(data.nguoiDung.tenNguoiNhan);
                 $('#diaChi').text(data.nguoiDung.diaChi);
                 $('#soDienThoai').text(data.nguoiDung.soDienThoai);
-                $('#tenNguoiDat').text(data.nguoiDung.tenNguoiDat); // Thêm thông tin người đặt
+                $('#tenNguoiDat').text(data.nguoiDung.tenNguoiDat); 
                 $('#ngayDat').text(data.ngayDat);
                 $('#trangThaiDonHang').text(data.trangThaiDonHang);
                 $('#trangThaiThanhToan').text(data.trangThaiThanhToan);

@@ -111,6 +111,7 @@ namespace WebBanThatLung.Areas.NhanVien.Controllers
                 tenSanPham = ct.SAN_PHAM.TEN_SAN_PHAM,
                 soLuong = ct.SO_LUONG,
                 gia = ct.GIA,
+                mauSP = ct.MauSanPham,
                 thanhTien = ct.THANH_TIEN
             }).ToList();
 

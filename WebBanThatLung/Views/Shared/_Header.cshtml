@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<style>
+
+    div#\:0\.targetLanguage,
+    a.VIpgJd-ZVi9od-l4eHX-hSRGPd {
+        margin-left: calc(100vw - 67px);
+
+        padding: 5px;
+        width: 1px;
+        margin-top: 10px;
+        color: black;
+    }
+
+    .goog-logo-link {
+        display: none !important;
+    }
+
+    .goog-te-gadget {
+        color: transparent !important;
+    }
+
+    select.goog-te-combo {
+        width: 150px;
+        height: 35px;
+        border: 1px solid #dcdcdc;
+        padding: 8px;
+    }
+
+    .skiptranslate:not(.goog-te-gadget) {
+        visibility: hidden !important;
+    }
+
+    .goog-te-banner-frame.skiptranslate,
+    .VIpgJd-ZVi9od-aZ2wEe-wOHMyf.VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc {
+        visibility: hidden !important;
+    }
+
+    body {
+        top: 0 !important;
+    }
+
+    .skiptranslate goog-te-gadget {
+        display: inline;
+    }
+
+    #google_translate_element {
+        display: inline;
+        position: absolute;
+        left: -140px;
+        top: -20px;
+    }
+
+    .nav-item {
+        position: relative;
+    }
+
+    #google_translate_element,
+    .skiptranslate.goog-te-gadget,
+    .skiptranslate.goog-te-gadget > div {
+        display: inline !important;
+    }
+
+    .pull-left {
+        float: left;
+    }
+
+    .pull-right {
+        float: right;
+    }
+
+    .ovl-auto {
+        overflow: auto;
+    }
+
+    .checkbox:checked + img {
+        border: 3px solid #21da11;
+        position: relative;
+        top: -3px;
+        transform: scale(1.2);
+    }
+
+    .svg-icon img {
+        width: 24px;
+        height: 24px;
+    }
+
+    span.nav-link-text {
+        font-weight: 500;
+    }
+
+    .nav-item span.badge.ms-auto {
+        font-size: 12px;
+    }
+
+    .nav-link {
+        white-space: normal !important;
+    }
+
+
+    .hk-wrapper[data-menu=dark] .hk-pg-wrapper {
+        background-color: #f5f6fa;
+    }
+
+
+    div.dataTables_wrapper div.dataTables_filter input {
+        width: auto !important;
+    }
+
+    .card .card-header {
+        display: block !important;
+    }
+
+    .new_updates {
+        max-height: 350px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #ced6e0;
+        border-radius: 2px;
+    }
+</style>
+
+
+<body>
+
+    <!-- Wrapper -->
+    <div class="hk-wrapper" data-layout="vertical" data-layout-style="default" data-menu="dark" data-footer="simple">
+        <!-- Top Navbar -->
+        <nav class="hk-navbar navbar navbar-expand-xl navbar-light fixed-top">
+            <div class="container-fluid">
+                <!-- End Nav -->
+                <div class="nav-end-wrap">
+                    <ul class="navbar-nav flex-row">
+                        <li class="nav-item">
+
+                            <div id="google_translate_element"></div>
+                            <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                            <script>
+                                function googleTranslateElementInit() {
+                                    new google.translate.TranslateElement({
+                                        pageLanguage: 'vi',
+                                        // includedLanguages: 'cs,de,en,es,fr,fy,hi,hmn,hu,id,ja,km,kn,ko,la,lo,mg,ml,mn,ms,ne,pt,ro,ru,th,tr,uk,vi,zh-CN,zh-TW',
+                                        layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+                                        // multilanguagePage: true
+                                    }, 'google_translate_element');
+                                }
+                            </script>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /End Nav -->
+            </div>
+        </nav>
+        <!-- /Top Navbar -->
+    </div>
+    <script src="/jampack/dist/js/script.js?=1"></script>
+
+    <script src="/jampack/dist/js/user.js?=3"></script>
+    <script>
+        $(document).ready(function () {
+            // if (!getCookie('modalSystem')) {
+            //     $('#modalSystem').modal('show');
+            // }
+            // $('#modalSystem').modal('show');
+            $('#modalSystem').modal('show');
+
+            $.ajax({
+                type: "POST",
+                url: "https://subgiare.vn/statistical-orders",
+                data: {},
+                dataType: "json",
+                success: function (response) {
+                    if (response.status) {
+                        let data = response.data;
+                        $('#totalOrder').html(formatNumber(data.total));
+                        $('#totalActive').html(formatNumber(data.active));
+                        $('#totalSuccess').html(formatNumber(data.success));
+                        $('#totalPause').html(formatNumber(data.pause));
+                        $('#totalReport').html(formatNumber(data.report));
+                        $('#totalRefund').html(formatNumber(data.refund));
+                        let showProcess = $('#showProcess');
+                        showProcess.html(`${data.process}%`);
+                        showProcess.attr('style', `width: ${data.process}%`);
+                        showProcess.attr('aria-valuenow', data.process);
+                    }
+                }
+            });
+
+        });
+
+        function closeModalSystem() {
+            setCookie('modalSystem', true, 1);
+            $('#modalSystem').modal('hide');
+        }
+    </script>
+</body>
+
+</html>

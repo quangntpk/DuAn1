@@ -1,3 +1,154 @@
-﻿@{
-    ViewData["Title"] = "Thông tin cá nhân";
+﻿@model WebBanThatLung.Models.NguoiDungModel
+@{
+    ViewData["Title"] = "Cập nhật thông tin cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.ThatBai != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ThatBai
+    </div>
+}
+
+<style>
+    .breadcrumb-section.breadcrumb-bg {
+        background-color: #F28123;
+        padding: 20px 0;
+    }
+
+    .breadcrumb-text h2 {
+        color: #fff;
+    }
+
+    .card {
+        margin: 150px 0 100px;
+        border: 1px solid #F28123;
+    }
+
+    .card-header {
+        background-color: #F28123;
+        border-radius: 10px 10px 0 0;
+        color: #fff;
+    }
+
+    .btn-primary {
+        background-color: #F28123;
+        border-color: #F28123;
+        color: #000;
+        font-weight: bold;
+    }
+
+        .btn-primary:hover {
+            background-color: #000;
+            border-color: #000;
+            color: #F28123;
+            font-weight: bold;
+        }
+
+    .form-group label {
+        color: #333;
+    }
+
+    .form-control {
+        margin-bottom: 20px;
+    }
+
+        .form-control:focus {
+            border-color: #F28123;
+            box-shadow: 0 0 0 0.2rem rgba(242, 129, 35, 0.25);
+        }
+</style>
+
+<div class="breadcrumb-section breadcrumb-bg" style="padding: 50px 50px;">
+</div>
+
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: -80px">
+        <div class="col-md-8">
+            <div class="card">
+
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Cập nhật trang cá nhân</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="ThongTinCaNhan" method="post" enctype="multipart/form-data">
+
+
+                        <div class="form-group">
+                            <label asp-for="HinhAnhTaiLen" class="control-label">Hình ảnh</label>
+                            <input asp-for="HinhAnhTaiLen" type="file" id="fileInput" accept="image/*" onchange="previewImage(event)" class="form-control" style="padding: 2.5px;" />
+                            <img id="imagePreview" src="~/media/KhachHang/@Model?.HINH_ANH" alt="Image Preview" style="max-width: 200px; height: 200px; margin-top: 20px; border-radius: 10px;" />
+                            <span asp-validation-for="HinhAnhTaiLen" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="HO_TEN">Họ tên</label>
+                            <input asp-for="HO_TEN" class="form-control" />
+                            <span asp-validation-for="HO_TEN" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="NGAY_SINH">Ngày sinh</label>
+                            <input asp-for="NGAY_SINH" type="date" class="form-control" />
+                            <span asp-validation-for="NGAY_SINH" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="SDT">Số điện thoại</label>
+                            <input asp-for="SDT" class="form-control" />
+                            <span asp-validation-for="SDT" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="EMAIL">Email</label>
+                            <input asp-for="EMAIL" type="email" class="form-control" />
+                            <span asp-validation-for="EMAIL" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CCCD">Số căn cước công dân</label>
+                            <input asp-for="CCCD" class="form-control" />
+                            <span asp-validation-for="CCCD" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <button type="submit" style="width: 100%" class="btn btn-primary">Cập nhật thông tin</button>
+                        <br /><br />
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const file = input.files[0];
+            const imagePreview = document.getElementById('imagePreview');
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.src = ''; // Xóa hình ảnh nếu không có tệp nào được chọn
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Các sự kiện hoặc mã JavaScript khác có thể được thêm vào đây nếu cần
+        });
+    </script>
 }

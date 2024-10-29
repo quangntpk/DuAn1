@@ -16,10 +16,12 @@ namespace WebBanThatLung.Models
 
         [Required(ErrorMessage = "Yêu cầu nhập số điện thoại")]
         [RegularExpression(@"^\d{10}$", ErrorMessage = "SDT phải là số và có 10 ký tự.")]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có đúng 10 chữ số.")]
         public string SDT { get; set; }
 
         [Required(ErrorMessage = "Yêu cầu nhập CCCD")]
         [RegularExpression(@"^\d{12}$", ErrorMessage = "CCCD phải là số và có 12 ký tự.")]
+        [StringLength(12, MinimumLength = 12, ErrorMessage = "CCCD phải có đúng 12 chữ số.")]
         public string CCCD { get; set; }
 
         [Required(ErrorMessage = "Yêu cầu nhập Email")]
@@ -36,9 +38,19 @@ namespace WebBanThatLung.Models
         public string MAT_KHAU { get; set; }
 
         public int VAI_TRO { get; set; } = 0;
+
+        [Required(ErrorMessage = "Không được để chống hình ảnh.")]
         public string HINH_ANH { get; set; } = "User_images.jpg";
         public DateTime NGAY_TAO { get; set; } = DateTime.Now;
         public int TRANG_THAI { get; set; } = 0;
+
+        [Required(ErrorMessage = "Yêu cầu nhập ngày tháng năm sinh.")]
         public DateTime NGAY_SINH { get; set; } = DateTime.Now;
+        [NotMapped]
+        public IFormFile? HinhAnhTaiLen { get; set; }
+        public int CancelCount { get; set; } = 0; // Track the number of cancellations
+        public DateTime? LockoutEndDate { get; set; }
+
+
     }
 }
